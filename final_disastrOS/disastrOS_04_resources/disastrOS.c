@@ -31,6 +31,10 @@ ucontext_t interrupt_context;
 ucontext_t trap_context;
 ucontext_t main_context;
 ucontext_t idle_context;
+
+// at: we declare the signal ucontext HERE
+ucontext_t signal_context;
+
 int shutdown_now=0; // used for termination
 char system_stack[STACK_SIZE];
 
@@ -176,6 +180,8 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
 
   syscall_vector[DSOS_CALL_SHUTDOWN]      = internal_shutdown;
   syscall_numarg[DSOS_CALL_SHUTDOWN]      = 0;
+
+s
 
   // setup the scheduling lists
   running=0;
