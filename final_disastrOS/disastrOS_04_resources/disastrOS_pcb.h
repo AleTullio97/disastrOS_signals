@@ -18,8 +18,8 @@ typedef struct PCB{
   int pid;
   int return_value; // ret value for the parent
   ProcessStatus status;
-  int signals;
-  int signals_mask;
+  int signals;			// at: ...
+  int signals_mask;		// at: ...
   struct PCB* parent;
   ListHead children;
   ucontext_t cpu_state;
@@ -37,6 +37,9 @@ typedef struct PCB{
 
   // more stuff to come
 
+  // at: as specified in the assignment: "Signals of the same process 
+  // at: share a common stack."
+  char signal_stack[STACK_SIZE];
   
   //the one below is a hack for the syscalls
   //in a real system one needs to use the cpu to pass

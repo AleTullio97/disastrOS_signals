@@ -34,10 +34,15 @@ void internal_schedule() {
     List_insert(&ready_list, ready_list.last, (ListItem*) running);
     next_process->status=Running;
     running=next_process;
+    
+    // at: eventual signals are checked only when a process changes
+    // at: its status from Ready -> Running ( according to the specifics ).  
+	signals_check();
   }
   //disastrOS_printStatus();
  
   if (running) {
     disastrOS_debug(" %d\n", running->pid);
   }
+
 }

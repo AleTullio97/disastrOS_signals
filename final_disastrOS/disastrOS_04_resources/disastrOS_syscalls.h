@@ -24,3 +24,10 @@ void internal_openResource();
 void internal_closeResource();
 
 void internal_destroyResource();
+
+// at: new syscall defined HERE
+void internal_kill();
+
+void internal_raise();
+
+void internal_pause();
