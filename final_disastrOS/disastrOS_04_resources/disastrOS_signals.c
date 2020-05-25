@@ -1,7 +1,11 @@
 #include <assert.h>
 #include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
 #include "disastrOS_signals.h"
 #include "disastrOS_constants.h"
+#include "disastrOS.h"
+#include "disastrOS_globals.h"
 
 // #include "pool_allocator.h"
 // #include "disastrOS_pcb.h"
@@ -39,10 +43,10 @@ void  disastrOS_SIGHUP_handler(int sig_number_){
 
 
 void sigHandler(int sig_number_) {
-  if (sig_number_ != SIGINT){
+  if (sig_number_ != DSOS_SIGHUP){
     printf("p2|error, wrong signal\n");
     exit(EXIT_FAILURE);
   }
-  printf("p2|received SIGINT, stopping consumption\n");
-  run = false;
+  printf("p2|received SIGHUP, stopping consumption\n");
+  running = 0;
 }

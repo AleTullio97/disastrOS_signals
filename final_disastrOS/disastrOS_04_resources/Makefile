@@ -33,9 +33,8 @@ OBJS=pool_allocator.o\
      disastrOS_close_resource.o\
      disastrOS_destroy_resource.o\
      disastrOS_kill.o\
-     disastrOS_raise.o\
      disastrOS_pause.o\
-     disastrOS_signals.o
+     disastrOS_signals.o\
 
 LIBS=libdisastrOS.a
 

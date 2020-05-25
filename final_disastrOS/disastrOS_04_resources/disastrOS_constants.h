@@ -12,15 +12,16 @@
 #define DSOS_SIGCHLD 0x1
 #define DSOS_SIGHUP  0x2
 
+/*
 // at: Here we declare the bitsmask for each signal.
 // at: A signal, in our OS, is represented by an int of 4 byte,
 // at: i.e. 32 bit. 
 // at: This is why I defined 32 bit for each signal bitsmask.
 
 // at: I implement 2 SIGNAL for the project accordingly to the upper definition.
-#define DSOS_SIGCHLD_MASK 	00000000000000000000000000000001	 
-#define DSOS_SIGHUP_MASK	00000000000000000000000000000010 
-
+#define DSOS_SIGCHLD_MASK 	0x1		// at binary equivalent: 00000000000000000000000000000001	 
+#define DSOS_SIGHUP_MASK	0x2 	// at binary equivalent: 00000000000000000000000000000010 
+*/
 
 
 // errors
@@ -38,6 +39,10 @@
 #define DSOS_ERESOURCECLOSE -12
 #define DSOS_ERESOURCEINUSE -13
 
+// at the following errors concerns signals 
+#define DSOS_EINVAL -14 // at thrown when an invalid signal is sent.
+#define DSOS_ESRCH -15 // at the target process or process group does not exist.
+
 // syscall numbers
 #define DSOS_MAX_SYSCALLS 32
 #define DSOS_MAX_SYSCALLS_ARGS 8
@@ -52,10 +57,9 @@
 #define DSOS_CALL_DESTROY_RESOURCE 9
 #define DSOS_CALL_SHUTDOWN  10
 
-// at: defining syscall no for kill
-#define DSOS_CALL_KILL		11
-#define DSOS_CALL_RAISE  12
-#define DSOS_CALL_PAUSE  13
+// at defining syscall numbers
+#define DSOS_CALL_KILL	 11
+#define DSOS_CALL_PAUSE  12
 
 //resources
 #define DSOS_CREATE 0x1

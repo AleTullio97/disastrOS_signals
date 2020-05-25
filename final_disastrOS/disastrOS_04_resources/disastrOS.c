@@ -25,11 +25,12 @@ ListHead timer_list;
 // a resource can be a device, a file or an ipc thing
 ListHead resources_list;
 
-// at: when a signal arrives, it is attached to a signal_list.
-// at: When a process changes is state into running, it
-// at: checks and handles all the signals it received (if any).
-ListHead signal_list;
-
+/// DELETE
+/// at: when a signal arrives, it is attached to a signal_list.
+/// at: When a process changes is state into running, it
+/// at: checks and handles all the signals it received (if any).
+///ListHead signal_list;
+/// TO DELETE SOON...
 
 SyscallFunctionType syscall_vector[DSOS_MAX_SYSCALLS];
 int syscall_numarg[DSOS_MAX_SYSCALLS];
@@ -48,16 +49,17 @@ char system_stack[STACK_SIZE];
 
 
 sigset_t signal_set;                       // process wide signal mask 
-char signal_stack[STACK_SIZE];			   // at: signal stack for the akernel
+char signal_stack[STACK_SIZE];			   // at: signal stack for the kernel
 
+/*	to DELETE
 // at: the following array is used to obtain the signal mask by signal number.
-int sig_mask[2];
+// uint32_t sig_mask[2];
+*/
 
 volatile int disastrOS_time=0;
 
 
-
-
+/*		TO delete
 // at: the following will assign an array used for conversion from SIGNO -> SIGMASK
 void SignalArray_init(void){
 	printf("Initializing signal mask array...\n");
@@ -65,7 +67,7 @@ void SignalArray_init(void){
 	sig_mask[DSOS_SIGHUP-1] = DSOS_SIGHUP_MASK;
 	printf("Initialization done. All right so far!\n");
 }
-
+*/
 
 void timerHandler(int j, siginfo_t *si, void *old_context) {
   swapcontext(&running->cpu_state, &interrupt_context);
@@ -169,7 +171,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   Timer_init();
   Resource_init();
   Descriptor_init();
-  SignalArray_init();
+  /*SignalArray_init(); TO DELETE*/
   init_pcb=0;
 
   // populate the vector of syscalls and number of arguments for each syscall
@@ -211,9 +213,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   syscall_vector[DSOS_CALL_KILL]      = internal_kill;
   syscall_numarg[DSOS_CALL_KILL]      = 2;
 
-  syscall_vector[DSOS_CALL_RAISE]      = internal_raise;
-  syscall_numarg[DSOS_CALL_RAISE]      = 1;
-
   syscall_vector[DSOS_CALL_PAUSE]      = internal_pause;
   syscall_numarg[DSOS_CALL_PAUSE]      = 0;
 
@@ -226,8 +225,10 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   List_init(&resources_list);
   List_init(&timer_list);
 
+/*		to DELETE
   // at: initialize signal_list.
   List_init(&signal_list);
+*/
 
   /* INITIALIZATION OF SYSCALL AND INTERRUPT INFRASTRUCTIRE*/
   disastrOS_debug("setting entry point for system shudtown... ");
@@ -334,8 +335,9 @@ int disastrOS_kill(int pid, int sig){
 	return disastrOS_syscall(DSOS_CALL_KILL, pid, sig);
 }
 
-int disastrOS_raise(int signal){
-	return disastrOS_syscall(DSOS_CALL_RAISE, signal);
+// at: raise is equivalent to the kill syscall, but pid = running->pid
+int disastrOS_raise(int sig){
+	return disastrOS_syscall(DSOS_CALL_KILL, running->pid, sig);
 }
 
 int disastrOS_pause(void){

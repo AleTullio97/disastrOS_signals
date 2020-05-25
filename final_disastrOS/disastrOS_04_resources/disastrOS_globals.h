@@ -14,10 +14,11 @@ extern ListHead waiting_list; // list of the waiting processes
 extern ListHead zombie_list;  // zombies
 extern ListHead resources_list; // resources
 
-// at: when a signal arrives, it is attached to a signal_list.
-// at: When a process changes is state into running, it
-// at: checks and handles all the signals it received (if any).
-extern ListHead signal_list;
+/// at: when a signal arrives, it is attached to a signal_list.
+/// at: When a process changes is state into running, it
+/// at: checks and handles all the signals it received (if any).
+///extern ListHead signal_list;
+/// TO BE DELETED SOON...
 
 extern ListHead timer_list;     //timers (concrete)
 extern volatile int disastrOS_time; //global time of disastrOS
