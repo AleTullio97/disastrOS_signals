@@ -4,7 +4,7 @@
 #include "disastrOS.h"
 #include "disastrOS_syscalls.h"
 
-// non ho impostato un proesso in waiting list quando riceve un segnale. va bene?
+// at send SIGNAL to the target process
 
 void internal_kill() {
   // at sanity check
@@ -29,29 +29,34 @@ void internal_kill() {
 	  return;
   }
   
-  /*
-  // at case: the process masks the raised signal.
-  if((sig & running->signals_mask)!=0){
-	  
-	  return;
-  }
-  */
-  
-  // at here we look in the child list
+  // at SIGCHLD can be sent to the parent only 
   if(sig == DSOS_SIGCHLD){
-	  // at the SIGCHLD can be sent only to the parent process
 	  if((!running->parent) || (running->parent->pid != pid)){
 		  running->syscall_retvalue=DSOS_ESRCH;
-		  return;
 	  }else {
-		  running->parent->signals|=sig;
+		  running->parent->signals|=(sig & running->parent->signals_mask);
 		  running->syscall_retvalue=0;
-		  return;
 	  }
+	  return;
   }
   
-  // at here we look at te parent (if it is alive)
-  if( sig == DSOS_SIGHUP){
-	  // don't know at the moment how to implement.  
+  // at finding the target PCB
+  // at firstly I look at te children list
+  // at then I look at the parent
+  if(sig == DSOS_SIGHUP){
+	  PCB* targetPCB = PCB_byPID(&(running->children), pid);
+	  if(targetPCB)
+	  {
+		  targetPCB->signals |= (sig & targetPCB->signals_mask);
+		  running->syscall_retvalue=0;
+	  }
+	  else if((running->parent) && (running->parent->pid == pid)){
+		  running->parent->signals |= (sig & running->signals_mask);
+		  running->syscall_retvalue=0;
+	  }
+	  else {
+		  running->syscall_retvalue=DSOS_ESRCH;
+	  }
+	  return;
   } 
 }

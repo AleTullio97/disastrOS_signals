@@ -1,8 +1,14 @@
 #pragma once
 
-void signals_check();
+/*
+typedef void (*disastrOS_sighandler_t)(int);
 
-void  disastrOS_SIGCHLD_handler(int sig_number_);
+disastrOS_sighandler_t signal(int signum, disastrOS_sighandler_t handler);
+*/
 
-void  disastrOS_SIGHUP_handler(int sig_number_);
+void signals_handle();
+
+void disastrOS_SIGCHLD_handler();
+
+void disastrOS_SIGHUP_handler();
 

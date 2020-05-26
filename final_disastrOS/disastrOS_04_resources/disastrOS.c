@@ -11,7 +11,7 @@
 #include "disastrOS_timer.h"
 #include "disastrOS_resource.h"
 #include "disastrOS_descriptor.h"
-
+#include "disastrOS_signals.h"
 
 FILE* log_file=NULL;
 PCB* init_pcb;
@@ -41,7 +41,7 @@ ucontext_t main_context;
 ucontext_t idle_context;
 
 // at: we declare the signal ucontext HERE
-// at: all the signals are handled in the signal_context.
+// at: all signals are handled in the signal_context.
 ucontext_t signal_context;
 
 int shutdown_now=0; // used for termination
@@ -225,11 +225,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   List_init(&resources_list);
   List_init(&timer_list);
 
-/*		to DELETE
-  // at: initialize signal_list.
-  List_init(&signal_list);
-*/
-
   /* INITIALIZATION OF SYSCALL AND INTERRUPT INFRASTRUCTIRE*/
   disastrOS_debug("setting entry point for system shudtown... ");
   getcontext(&main_context); //<< we will come back here on shutdown
@@ -253,9 +248,19 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   sigemptyset(&interrupt_context.uc_sigmask);
   makecontext(&interrupt_context, timerInterrupt, 0); //< this is a context for the interrupt
 
+  /*
+  // at creating the signal context from an existing one
+  signal_context=trap_context;
+  signal_context.uc_stack.ss_sp = signal_stack;
+  signal_context.uc_stack.ss_size = STACK_SIZE;
+  sigemptyset(&signal_context.uc_sigmask);
+  sigaddset(&signal_context.uc_sigmask, SIGALRM);
+  signal_context.uc_stack.ss_flags=0;
+  signal_context.uc_link=&main_context;
+  makecontext(&signal_context, signals_handle, 0);
+  */
 
   
-
   /* STARTING FIRST PROCESS AND IDLING*/
   running=PCB_alloc();
   running->status=Running;
@@ -281,6 +286,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
     log_file=fopen(logfile, "w");
     fprintf(log_file, "TIME: %d\tPID: -1\tACTION: START\n", disastrOS_time);
   }
+
   setcontext(&running->cpu_state);
 }
 

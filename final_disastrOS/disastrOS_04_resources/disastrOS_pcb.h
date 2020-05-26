@@ -23,6 +23,8 @@ typedef struct PCB{
   struct PCB* parent;
   ListHead children;
   ucontext_t cpu_state;
+  ucontext_t signal_context; // at accordig to the specifics : "Signals of the same
+							// at process share a common stack"
   // timers
   struct TimerItem *timer;
 
