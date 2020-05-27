@@ -28,3 +28,18 @@ void internal_fork() {
   //sets the retvalue for the caller to the new pid
   running->syscall_retvalue=new_pcb->pid;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

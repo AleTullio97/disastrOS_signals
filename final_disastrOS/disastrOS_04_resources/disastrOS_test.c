@@ -3,6 +3,8 @@
 #include <poll.h>
 
 #include "disastrOS.h"
+#include "disastrOS_globals.h"
+
 
 // we need this to handle the sleep state
 void sleeperFunction(void* args){
@@ -23,7 +25,10 @@ void childFunction(void* args){
   
   for (int i=0; i<(disastrOS_getpid()+1); ++i){
     printf("PID: %d, iterate %d\n", disastrOS_getpid(), i);
-    disastrOS_sleep((20-disastrOS_getpid())*5);
+    disastrOS_sleep(10);
+    disastrOS_kill(init_pcb->pid, DSOS_SIGHUP);
+    disastrOS_raise(DSOS_SIGCHLD);
+    //disastrOS_sleep((20-disastrOS_getpid())*5);
   }
   printf("PID: %d, terminating\n", disastrOS_getpid());
   disastrOS_exit(disastrOS_getpid()+1);
@@ -36,7 +41,7 @@ void initFunction(void* args) {
   disastrOS_spawn(sleeperFunction, 0);
   
 
-  printf("I feel like to spawn 10 nice process\n");
+  printf("I feel like to spawn 10 nice threads\n");
   int alive_children=0;
   for (int i=0; i<10; ++i) {
     int type=0;

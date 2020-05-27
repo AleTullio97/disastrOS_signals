@@ -18,7 +18,7 @@
   Signals of the same process share a common stack.
 
   Each installed signal should be managed by an appropriate context that,
-   when terminated, returns to the context of the process.
+  when terminated, returns to the context of the process.
 
   A signal is checked when a process enters the running state, and if so the 
   context switch should occur not on the process context but on the signal context.

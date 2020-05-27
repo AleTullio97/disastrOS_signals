@@ -48,7 +48,7 @@ PCB* PCB_alloc() {
   pcb->status=Invalid;
   pcb->last_fd=0;
   pcb->signals=0;
-  pcb->signals_mask=0xFFFFFFFF;
+  pcb->signals_mask=0xFFFFFFFF;  // at this mask allows every signals
   pcb->status=Invalid;
   List_init(&pcb->descriptors);
   pcb->parent=0;

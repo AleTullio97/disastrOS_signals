@@ -45,8 +45,8 @@ void internal_spawn(){
   new_pcb->signal_context=new_pcb->cpu_state;
   new_pcb->signal_context.uc_stack.ss_sp = new_pcb->signal_stack;
   new_pcb->signal_context.uc_stack.ss_size = STACK_SIZE;
-  sigemptyset(&new_pcb->signal_context.uc_sigmask);
-  sigaddset(&new_pcb->signal_context.uc_sigmask, SIGALRM);
+  sigemptyset(&(new_pcb->signal_context.uc_sigmask));
+  sigaddset(&(new_pcb->signal_context.uc_sigmask), SIGALRM);
   new_pcb->signal_context.uc_stack.ss_flags=0;
   new_pcb->signal_context.uc_link=&main_context;
   makecontext(&new_pcb->signal_context, signals_handle, 0);

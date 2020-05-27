@@ -43,13 +43,16 @@ ucontext_t idle_context;
 // at: we declare the signal ucontext HERE
 // at: all signals are handled in the signal_context.
 ucontext_t signal_context;
+ucontext_t TRAMPOLINE;
+
 
 int shutdown_now=0; // used for termination
 char system_stack[STACK_SIZE];
 
 
 sigset_t signal_set;                       // process wide signal mask 
-char signal_stack[STACK_SIZE];			   // at: signal stack for the kernel
+char signal_stack[STACK_SIZE];			   // at signal stack for the kernel
+char trampoline_stack[STACK_SIZE];         // at stack used for safely jump
 
 /*	to DELETE
 // at: the following array is used to obtain the signal mask by signal number.
@@ -171,7 +174,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   Timer_init();
   Resource_init();
   Descriptor_init();
-  /*SignalArray_init(); TO DELETE*/
   init_pcb=0;
 
   // populate the vector of syscalls and number of arguments for each syscall
@@ -248,7 +250,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   sigemptyset(&interrupt_context.uc_sigmask);
   makecontext(&interrupt_context, timerInterrupt, 0); //< this is a context for the interrupt
 
-  /*
+  
   // at creating the signal context from an existing one
   signal_context=trap_context;
   signal_context.uc_stack.ss_sp = signal_stack;
@@ -258,8 +260,15 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   signal_context.uc_stack.ss_flags=0;
   signal_context.uc_link=&main_context;
   makecontext(&signal_context, signals_handle, 0);
-  */
-
+  
+  TRAMPOLINE=trap_context;
+  TRAMPOLINE.uc_stack.ss_sp = trampoline_stack;
+  TRAMPOLINE.uc_stack.ss_size = STACK_SIZE;
+  sigemptyset(&TRAMPOLINE.uc_sigmask);
+  sigaddset(&TRAMPOLINE.uc_sigmask, SIGALRM);
+  TRAMPOLINE.uc_stack.ss_flags=0;
+  TRAMPOLINE.uc_link=&main_context;
+  makecontext(&TRAMPOLINE, signals_handle, 0);
   
   /* STARTING FIRST PROCESS AND IDLING*/
   running=PCB_alloc();

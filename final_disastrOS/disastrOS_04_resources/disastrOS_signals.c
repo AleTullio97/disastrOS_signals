@@ -26,20 +26,24 @@ disastrOS_sighandler_t signal(int signum, disastrOS_sighandler_t handler){
 }
 */
 
-void signals_handle(){	
-	int sig = running->signals;
-	if(sig == DSOS_SIGCHLD){
+void signals_handle(){
+	int signals = running->signals;
+	if(signals & DSOS_SIGCHLD){
 		disastrOS_SIGCHLD_handler();
 	}
-	if(sig == DSOS_SIGHUP){
+	if(signals & DSOS_SIGHUP){
 		disastrOS_SIGHUP_handler();
 	}
+	//printf("\nECCOME signals = %x\n",signals);
+	setcontext(&TRAMPOLINE);
 }
 
+// at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGCHLD_handler(){
 	printf("DSOS_SIGCHLD ignored!\n");
 }
 
+// at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGHUP_handler(){
 	printf("DSOS_SIGHUO ignored!\n");
 }

@@ -37,6 +37,7 @@ extern ucontext_t main_context;
 // at: we declare the signal ucontext HERE
 // at: all the signals are handled in the signal_context.
 extern ucontext_t signal_context;
+extern ucontext_t TRAMPOLINE; // at CONTEXT USEDO TO JUMP
 
 // this is used for shutting down (set it to 1, and return the control to main)
 extern int shutdown_now;

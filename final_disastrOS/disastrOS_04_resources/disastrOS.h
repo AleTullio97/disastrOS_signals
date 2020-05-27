@@ -28,6 +28,11 @@ void disastrOS_preempt();
 void disastrOS_spawn(void (*f)(void*), void* args );
 void disastrOS_shutdown();
 
+// at new syscall defined HERE
+int disastrOS_kill(int pid, int sig);
+int disastrOS_raise(int sig);
+int disastrOS_pause(void);
+
 // timers
 void disastrOS_sleep(int);
 

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "disastrOS.h"
 #include "disastrOS_syscalls.h"
+#include "disastrOS_globals.h"
+
 
 // replaces the running process with the next one in the ready list
 void internal_schedule() {
@@ -35,15 +37,16 @@ void internal_schedule() {
     List_insert(&ready_list, ready_list.last, (ListItem*) running);
     next_process->status=Running;
     running=next_process;
+    
+    // at here I am in the trap context.
+	// at lets check signals at this point
+	swapcontext(&TRAMPOLINE ,&running->signal_context);
   }
   // disastrOS_printStatus();
  
   if (running) {
     disastrOS_debug(" %d\n", running->pid);
   }
-  // at here I am in the trap context.
-  // at lets check signals at this point
-  // setcontext(&signal_context);
 }
 
 
