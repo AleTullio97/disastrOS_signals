@@ -41,15 +41,9 @@ void internal_spawn(){
   sigemptyset(&new_pcb->cpu_state.uc_sigmask);
   new_pcb->cpu_state.uc_link = &main_context;
   
-  // at creating the signal context from an existing one
-  new_pcb->signal_context=new_pcb->cpu_state;
-  new_pcb->signal_context.uc_stack.ss_sp = new_pcb->signal_stack;
-  new_pcb->signal_context.uc_stack.ss_size = STACK_SIZE;
-  sigemptyset(&(new_pcb->signal_context.uc_sigmask));
-  sigaddset(&(new_pcb->signal_context.uc_sigmask), SIGALRM);
-  new_pcb->signal_context.uc_stack.ss_flags=0;
-  new_pcb->signal_context.uc_link=&main_context;
-  makecontext(&new_pcb->signal_context, signals_handle, 0);
+  // at pay attention not to generate problems with the following
+  cpy_signals_handler(new_pcb, running);
+  // new_pcb->signals_handler=running->signals_handler;
   
   void (*new_function) (void*)= (void(*)(void*))  running->syscall_args[0];
   makecontext(&new_pcb->cpu_state, (void(*)())  new_function, 1, (void*)running->syscall_args[1]);

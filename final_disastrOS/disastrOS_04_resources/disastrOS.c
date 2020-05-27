@@ -25,13 +25,6 @@ ListHead timer_list;
 // a resource can be a device, a file or an ipc thing
 ListHead resources_list;
 
-/// DELETE
-/// at: when a signal arrives, it is attached to a signal_list.
-/// at: When a process changes is state into running, it
-/// at: checks and handles all the signals it received (if any).
-///ListHead signal_list;
-/// TO DELETE SOON...
-
 SyscallFunctionType syscall_vector[DSOS_MAX_SYSCALLS];
 int syscall_numarg[DSOS_MAX_SYSCALLS];
 
@@ -40,10 +33,10 @@ ucontext_t trap_context;
 ucontext_t main_context;
 ucontext_t idle_context;
 
-// at: we declare the signal ucontext HERE
-// at: all signals are handled in the signal_context.
+// at we declare the signal ucontext HERE
+// at all signals are handled in the signal_context.
 ucontext_t signal_context;
-ucontext_t TRAMPOLINE;
+char signal_stack[STACK_SIZE];			   // at signal stack for the kernel
 
 
 int shutdown_now=0; // used for termination
@@ -51,26 +44,8 @@ char system_stack[STACK_SIZE];
 
 
 sigset_t signal_set;                       // process wide signal mask 
-char signal_stack[STACK_SIZE];			   // at signal stack for the kernel
-char trampoline_stack[STACK_SIZE];         // at stack used for safely jump
-
-/*	to DELETE
-// at: the following array is used to obtain the signal mask by signal number.
-// uint32_t sig_mask[2];
-*/
 
 volatile int disastrOS_time=0;
-
-
-/*		TO delete
-// at: the following will assign an array used for conversion from SIGNO -> SIGMASK
-void SignalArray_init(void){
-	printf("Initializing signal mask array...\n");
-	sig_mask[DSOS_SIGCHLD-1] = DSOS_SIGCHLD_MASK;
-	sig_mask[DSOS_SIGHUP-1] = DSOS_SIGHUP_MASK;
-	printf("Initialization done. All right so far!\n");
-}
-*/
 
 void timerHandler(int j, siginfo_t *si, void *old_context) {
   swapcontext(&running->cpu_state, &interrupt_context);
@@ -261,15 +236,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   signal_context.uc_link=&main_context;
   makecontext(&signal_context, signals_handle, 0);
   
-  TRAMPOLINE=trap_context;
-  TRAMPOLINE.uc_stack.ss_sp = trampoline_stack;
-  TRAMPOLINE.uc_stack.ss_size = STACK_SIZE;
-  sigemptyset(&TRAMPOLINE.uc_sigmask);
-  sigaddset(&TRAMPOLINE.uc_sigmask, SIGALRM);
-  TRAMPOLINE.uc_stack.ss_flags=0;
-  TRAMPOLINE.uc_link=&main_context;
-  makecontext(&TRAMPOLINE, signals_handle, 0);
-  
   /* STARTING FIRST PROCESS AND IDLING*/
   running=PCB_alloc();
   running->status=Running;
@@ -295,7 +261,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
     log_file=fopen(logfile, "w");
     fprintf(log_file, "TIME: %d\tPID: -1\tACTION: START\n", disastrOS_time);
   }
-
   setcontext(&running->cpu_state);
 }
 
@@ -345,16 +310,16 @@ int disastrOS_destroyResource(int resource_id) {
   return disastrOS_syscall(DSOS_CALL_DESTROY_RESOURCE, resource_id);
 }
 
-// at: NEW disastrOS syscall wrapper defined HERE
+// at NEW disastrOS syscall wrapper defined HERE
 int disastrOS_kill(int pid, int sig){
 	return disastrOS_syscall(DSOS_CALL_KILL, pid, sig);
 }
 
-// at: raise is equivalent to the kill syscall, but pid = running->pid
+// at raise is equivalent to the kill syscall, but pid = running->pid
 int disastrOS_raise(int sig){
 	return disastrOS_syscall(DSOS_CALL_KILL, running->pid, sig);
 }
-
+// at pause syscall to be defined soon...
 int disastrOS_pause(void){
 	return disastrOS_syscall(DSOS_CALL_PAUSE);
 }

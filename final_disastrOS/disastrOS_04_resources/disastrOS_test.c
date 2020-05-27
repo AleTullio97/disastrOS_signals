@@ -24,10 +24,14 @@ void childFunction(void* args){
   printf("fd=%d\n", fd);
   
   for (int i=0; i<(disastrOS_getpid()+1); ++i){
-    printf("PID: %d, iterate %d\n", disastrOS_getpid(), i);
+    printf("PID: %d, iteration: %d\n", disastrOS_getpid(), i);
     disastrOS_sleep(10);
-    disastrOS_kill(init_pcb->pid, DSOS_SIGHUP);
-    disastrOS_raise(DSOS_SIGCHLD);
+    //disastrOS_kill(init_pcb->pid, DSOS_SIGHUP);
+    //disastrOS_raise(DSOS_SIGCHLD);
+    //disastrOS_raise(DSOS_SIGCHLD);
+    //disastrOS_raise(DSOS_SIGHUP);
+    //disastrOS_raise(DSOS_SIGHUP);
+    
     //disastrOS_sleep((20-disastrOS_getpid())*5);
   }
   printf("PID: %d, terminating\n", disastrOS_getpid());

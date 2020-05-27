@@ -9,23 +9,13 @@
 
 // at signals are defined here
 #define MAX_SIGNALS 32
+#define DEFINED_SIG 2
 #define DSOS_SIGCHLD 0x1
 #define DSOS_SIGHUP  0x2
 
 // at macros for signal handler
 #define DSOS_SIG_DFL 0	// at set default behavior 
 #define DSOS_SIG_IGN 1 	// at explicitly ignore the signal
-
-/*
-// at: Here we declare the bitsmask for each signal.
-// at: A signal, in our OS, is represented by an int of 4 byte,
-// at: i.e. 32 bit. 
-// at: This is why I defined 32 bit for each signal bitsmask.
-
-// at: I implement 2 SIGNAL for the project accordingly to the upper definition.
-#define DSOS_SIGCHLD_MASK 	0x1		// at binary equivalent: 00000000000000000000000000000001	 
-#define DSOS_SIGHUP_MASK	0x2 	// at binary equivalent: 00000000000000000000000000000010 
-*/
 
 
 // errors
@@ -42,6 +32,7 @@
 #define DSOS_ERESOURCENOFD -11
 #define DSOS_ERESOURCECLOSE -12
 #define DSOS_ERESOURCEINUSE -13
+#define DSOS_EUNDEFSH -14		// at Undefined Signal Handler
 
 // at the following errors concerns signals 
 #define DSOS_EINVAL -14 // at thrown when an invalid signal is sent.

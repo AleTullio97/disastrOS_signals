@@ -27,17 +27,13 @@ extern volatile int disastrOS_time; //global time of disastrOS
 
 typedef void(*SyscallFunctionType)();
 
-// at: the following array is used to obtain the signal mask by signal number.
-extern int sig_mask[2];
-
 
 // these are used for "trapping" in protected mode
 extern ucontext_t main_context;
 
-// at: we declare the signal ucontext HERE
-// at: all the signals are handled in the signal_context.
+// at we declare the signal ucontext HERE
+// at all the signals are handled in the signal_context.
 extern ucontext_t signal_context;
-extern ucontext_t TRAMPOLINE; // at CONTEXT USEDO TO JUMP
 
 // this is used for shutting down (set it to 1, and return the control to main)
 extern int shutdown_now;

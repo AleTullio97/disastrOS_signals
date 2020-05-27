@@ -6,6 +6,7 @@
 #include "disastrOS.h"
 #include "disastrOS_globals.h"
 #include "disastrOS_timer.h"
+#include "disastrOS_signals.h"
 
 #define PCB_SIZE sizeof(PCB)
 #define PCB_MEMSIZE (sizeof(PCB)+sizeof(int))
@@ -54,9 +55,11 @@ PCB* PCB_alloc() {
   pcb->parent=0;
   pcb->timer=0;
   List_init(&pcb->children);
+  pcb->signals_handler[DSOS_SIGCHLD-1]=disastrOS_SIGCHLD_handler; // at DEFAULT handler
+  pcb->signals_handler[DSOS_SIGHUP-1]=disastrOS_SIGHUP_handler;   // at DEFAULT handler
   return pcb;
 }
-
+  
 int PCB_free(PCB* pcb){
   return PoolAllocator_releaseBlock(&_pcb_allocator, pcb);
 }

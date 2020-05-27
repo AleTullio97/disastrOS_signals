@@ -40,7 +40,7 @@ void internal_schedule() {
     
     // at here I am in the trap context.
 	// at lets check signals at this point
-	swapcontext(&TRAMPOLINE ,&running->signal_context);
+	setcontext(&signal_context);
   }
   // disastrOS_printStatus();
  
