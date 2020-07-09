@@ -43,7 +43,6 @@ void internal_spawn(){
   
   // at pay attention not to generate problems with the following
   cpy_signals_handler(new_pcb, running);
-  // new_pcb->signals_handler=running->signals_handler;
   
   void (*new_function) (void*)= (void(*)(void*))  running->syscall_args[0];
   makecontext(&new_pcb->cpu_state, (void(*)())  new_function, 1, (void*)running->syscall_args[1]);

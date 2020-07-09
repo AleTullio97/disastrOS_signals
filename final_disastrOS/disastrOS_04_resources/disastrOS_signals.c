@@ -10,17 +10,39 @@
 #include "disastrOS_globals.h"
 #include "disastrOS_pcb.h"
 
-/*
-typedef void (*disastrOS_sighandler_t)(int);
-// at signum is the signal we want to capture
-// at handler is the function pointer
+typedef void (*disastrOS_sighandler_t)(void);
 
-disastrOS_sighandler_t signal(int signum, disastrOS_sighandler_t handler){
-	//  SIG_DFL: default behavior
-	//  SIG_IGN: explicitly ignore the signal
+
+// at change running->signals_hanlder[signum] to handler
+// at return 0 on success
+// at return -1 on failure
+int disastrOS_signal(int signum, disastrOS_sighandler_t handler){
+	// at undefined SIGNAL has been sent
+	if( signum!=DSOS_SIGCHLD && signum!=DSOS_SIGHUP){
+		return -1;
+	}
+	else if(handler==DSOS_SIG_IGN){
+		running->signals_mask &= ~signum; // at avoid to receive signum signal
+		running->signals &= ~signum;
+		return 0;	  
+	}
+	else if(handler==DSOS_SIG_DFL){
+		if(signum==DSOS_SIGCHLD){
+			running->signals_handler[DSOS_SIGCHLD] = disastrOS_SIGCHLD_handler;
+			return 0;
+		}
+		else if(signum==DSOS_SIGHUP){
+			running->signals_handler[DSOS_SIGHUP] = disastrOS_SIGHUP_handler;
+			return 0;
+		}
+	}// at here we assume that handler is a user define function handler
+	else{
+		running->signals_handler[signum] = handler;
+		return 0;		
+	}
+	return 0;
 }
-*/
-
+	
 void cpy_signals_handler(PCB* child, PCB* parent){
 	int strct_size = sizeof(child->signals_handler);
 	char* buf_in = (char*) parent->signals_handler;
@@ -33,21 +55,15 @@ void cpy_signals_handler(PCB* child, PCB* parent){
 
 void signals_handle(){
 	int signals = running->signals;
+	printf("\nECCOME signals = %x\n",signals);
 	if(signals & DSOS_SIGCHLD){
 		(*running->signals_handler[DSOS_SIGCHLD-1])();
+		running->signals &=~DSOS_SIGCHLD; 
 	}
 	if(signals & DSOS_SIGHUP){
 		(*running->signals_handler[DSOS_SIGHUP-1])();
+		running->signals &=~DSOS_SIGHUP;
 	}
-	//printf("\nECCOME signals = %x\n",signals);
-	/*
-	if (log_file)
-		fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s %d\n",
-	    disastrOS_time,
-	    running->pid,
-	    "SYSCALL_OUT",
-	    syscall_num);
-	*/
 	if (running){
 		disastrOS_debug(" %d\n", running->pid);
 		setcontext(&running->cpu_state);
@@ -59,15 +75,31 @@ void signals_handle(){
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGCHLD_handler(){
-	printf("HEHEHEHE! DSOS_SIGCHLD ignored!\n");
+	printf("HEHEHEHE! DSOS_SIGCHLD ignored by DEFAULT!\n");
+	// at directly return to the running_pcb context
+	setcontext(&running->cpu_state);
 }
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGHUP_handler(){
-	printf("HAHAHAHA! DSOS_SIGHUP ignored!\n");
+	printf("HAHAHAHA! DSOS_SIGHUP ignored by DEFAULT!\n");
+	// at directly return to the running_pcb context
+	setcontext(&running->cpu_state);
 }
 
+// at NEW disastrOS syscall wrapper defined HERE
+// at send signal sig to pid
+int disastrOS_kill(int pid, int sig){
+	return disastrOS_syscall(DSOS_CALL_KILL, pid, sig);
+}
 
-
+// at raise is equivalent to the kill syscall, but pid = running->pid
+int disastrOS_raise(int sig){
+	return disastrOS_syscall(DSOS_CALL_KILL, running->pid, sig);
+}
+// at wait until a signal is received
+int disastrOS_pause(void){
+	return disastrOS_syscall(DSOS_CALL_PAUSE);
+}
 
 

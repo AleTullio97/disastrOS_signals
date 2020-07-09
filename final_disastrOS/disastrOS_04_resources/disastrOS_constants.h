@@ -14,8 +14,9 @@
 #define DSOS_SIGHUP  0x2
 
 // at macros for signal handler
-#define DSOS_SIG_DFL 0	// at set default behavior 
-#define DSOS_SIG_IGN 1 	// at explicitly ignore the signal
+#define DSOS_SIG_ERR (void (*)())-1	// at received when can not assign handler to a process
+#define DSOS_SIG_DFL (void (*)())0	// at set default behavior 
+#define DSOS_SIG_IGN (void (*)())1 	// at explicitly ignore the signal
 
 
 // errors

@@ -4,7 +4,7 @@
 
 #include "disastrOS.h"
 #include "disastrOS_globals.h"
-
+#include "disastrOS_signals.h"
 
 // we need this to handle the sleep state
 void sleeperFunction(void* args){
@@ -27,10 +27,19 @@ void childFunction(void* args){
     printf("PID: %d, iteration: %d\n", disastrOS_getpid(), i);
     disastrOS_sleep(10);
     //disastrOS_kill(init_pcb->pid, DSOS_SIGHUP);
-    //disastrOS_raise(DSOS_SIGCHLD);
-    //disastrOS_raise(DSOS_SIGCHLD);
-    //disastrOS_raise(DSOS_SIGHUP);
-    //disastrOS_raise(DSOS_SIGHUP);
+    disastrOS_raise(DSOS_SIGCHLD);
+    disastrOS_sleep(2);
+    int res = disastrOS_signal(DSOS_SIGCHLD, DSOS_SIG_IGN);
+    if(res<0){
+		printf("Cannot change signal handler, Something went wrong\n");
+	}
+    res = disastrOS_signal(DSOS_SIGHUP, DSOS_SIG_IGN);
+    if(res<0){
+		printf("Cannot change signal handler, Something went wrong\n");
+	}
+
+    disastrOS_raise(DSOS_SIGHUP);
+    
     
     //disastrOS_sleep((20-disastrOS_getpid())*5);
   }
@@ -38,6 +47,10 @@ void childFunction(void* args){
   disastrOS_exit(disastrOS_getpid()+1);
 }
 
+void pausatore(void){
+	int res = disastrOS_pause();
+	if(...) allelujah;
+}
 
 void initFunction(void* args) {
   disastrOS_printStatus();

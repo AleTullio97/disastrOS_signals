@@ -35,7 +35,7 @@ ucontext_t idle_context;
 
 // at we declare the signal ucontext HERE
 // at all signals are handled in the signal_context.
-ucontext_t signal_context;
+ucontext_t signals_context[DEFINED_SIG];
 char signal_stack[STACK_SIZE];			   // at signal stack for the kernel
 
 
@@ -102,6 +102,9 @@ int disastrOS_syscall(int syscall_num, ...) {
   va_end(ap);
   running->syscall_num=syscall_num;
   swapcontext(&running->cpu_state, &trap_context);
+  
+  // at handle new signals;
+  signals_handle();    
   return running->syscall_retvalue;
 }
 
@@ -128,14 +131,14 @@ void disastrOS_trap(){
   (*my_syscall)();
   //internal_schedule();
  return_to_process:
-  if (log_file)
+  if(log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s %d\n",
 	    disastrOS_time,
 	    running->pid,
 	    "SYSCALL_OUT",
 	    syscall_num);
   if (running)
-    setcontext(&running->cpu_state);
+	setcontext(&running->cpu_state);
   else {
     printf("no active processes\n");
     disastrOS_printStatus();
@@ -227,14 +230,20 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
 
   
   // at creating the signal context from an existing one
-  signal_context=trap_context;
-  signal_context.uc_stack.ss_sp = signal_stack;
-  signal_context.uc_stack.ss_size = STACK_SIZE;
-  sigemptyset(&signal_context.uc_sigmask);
-  sigaddset(&signal_context.uc_sigmask, SIGALRM);
-  signal_context.uc_stack.ss_flags=0;
-  signal_context.uc_link=&main_context;
-  makecontext(&signal_context, signals_handle, 0);
+  for(int i=0; i<DEFINED_SIG; i++){
+	signal_context[i]=trap_context;
+	signal_context[i].uc_stack.ss_sp = signal_stack;
+	signal_context[i].c_stack.ss_size = STACK_SIZE;
+	sigemptyset(&signal_context[i].uc_sigmask);
+	sigaddset(&signal_context[i].uc_sigmask, SIGALRM);
+	signal_context[i].uc_stack.ss_flags=0;
+	signal_context[i].uc_link=&main_context;
+	// at MAYBY MODIFY HERE
+  }
+  // at manually making context for each installed signals
+  makecontext(&signal_context[DSOS_SIGCHLD], disastrOS_SIGCHLD_handler, 0);
+  makecontext(&signal_context[DSOS_SIGHUP], disastrOS_SIGHUP_handler, 0);
+
   
   /* STARTING FIRST PROCESS AND IDLING*/
   running=PCB_alloc();
@@ -310,19 +319,6 @@ int disastrOS_destroyResource(int resource_id) {
   return disastrOS_syscall(DSOS_CALL_DESTROY_RESOURCE, resource_id);
 }
 
-// at NEW disastrOS syscall wrapper defined HERE
-int disastrOS_kill(int pid, int sig){
-	return disastrOS_syscall(DSOS_CALL_KILL, pid, sig);
-}
-
-// at raise is equivalent to the kill syscall, but pid = running->pid
-int disastrOS_raise(int sig){
-	return disastrOS_syscall(DSOS_CALL_KILL, running->pid, sig);
-}
-// at pause syscall to be defined soon...
-int disastrOS_pause(void){
-	return disastrOS_syscall(DSOS_CALL_PAUSE);
-}
 
 void disastrOS_printStatus(){
   printf("****************** DisastrOS ******************\n");

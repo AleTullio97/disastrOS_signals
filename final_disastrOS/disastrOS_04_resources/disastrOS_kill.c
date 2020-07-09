@@ -33,6 +33,7 @@ void internal_kill() {
 	  return;
   }
   
+  PCB* targetPCB=0;
   // at SIGCHLD can be sent to the parent only 
   if(sig == DSOS_SIGCHLD){
 	  if((!running->parent) || (running->parent->pid != pid)){
@@ -40,29 +41,32 @@ void internal_kill() {
 	  }else {
 		  running->parent->signals|=(sig & running->parent->signals_mask);
 		  running->syscall_retvalue=0;
+		  targetPCB=running->parent;
 	  }
 	  //printf("ECCOME3\n");
-	  return;
   }
   
   // at finding the target PCB
-  // at firstly I look at te children list
-  // at then I look at the parent
+  // at if not in the children list return error
   if(sig == DSOS_SIGHUP){
-	  PCB* targetPCB = PCB_byPID(&(running->children), pid);
+	  targetPCB = PCB_byPID(&(running->children), pid);
 	  if(targetPCB)
 	  {
 		  targetPCB->signals |= (sig & targetPCB->signals_mask);
-		  running->syscall_retvalue=0;
-	  }
-	  else if((running->parent) && (running->parent->pid == pid)){
-		  running->parent->signals |= (sig & running->signals_mask);
 		  running->syscall_retvalue=0;
 	  }
 	  else {
 		  running->syscall_retvalue=DSOS_ESRCH;
 	  }
 	  //printf("ECCOME4\n");
-	  return;
-  } 
+  }
+  // at ie if the process has received any signals
+  if(targetPCB){
+	  if(targetPCB->status==Waiting){
+		  List_detach(&waiting_list, (ListItem*) targetPCB);
+		  targetPCB->status=Ready;
+		  targetPCB->timer=0;
+		  List_insert(&ready_list, (ListItem*) targetPCB, (ListItem*) targetPCB);
+	  }
+  }
 }
