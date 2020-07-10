@@ -31,9 +31,5 @@ typedef void(*SyscallFunctionType)();
 // these are used for "trapping" in protected mode
 extern ucontext_t main_context;
 
-// at we declare the signal ucontext HERE
-// at all the signals are handled in the signal_context.
-extern ucontext_t signal_context;
-
 // this is used for shutting down (set it to 1, and return the control to main)
 extern int shutdown_now;

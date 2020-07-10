@@ -7,7 +7,8 @@
 
 void internal_pause(){
   assert(running);
-  
+  return;
+  /*
   if (ready_list.first){
 	 
     PCB* next_process=(PCB*) List_detach(&ready_list, ready_list.first);
@@ -17,8 +18,6 @@ void internal_pause(){
     next_process->status=Running;
     running=next_process;
     printf("\nEND OF PAUSE!!!\n");
-    // at here I am in the trap context.
-	// at lets check signals at this point
-	setcontext(&signal_context);
   }
+  * */
 }

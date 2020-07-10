@@ -46,6 +46,7 @@ PCB* PCB_alloc() {
   pcb->list.next=0;
   pcb->pid=last_pid; last_pid++;
   pcb->return_value=0;
+  pcb->swap_to_sc=0; // at set not to swap to signal context
   pcb->status=Invalid;
   pcb->last_fd=0;
   pcb->signals=0;
@@ -55,8 +56,6 @@ PCB* PCB_alloc() {
   pcb->parent=0;
   pcb->timer=0;
   List_init(&pcb->children);
-  pcb->signals_handler[DSOS_SIGCHLD-1]=disastrOS_SIGCHLD_handler; // at DEFAULT handler
-  pcb->signals_handler[DSOS_SIGHUP-1]=disastrOS_SIGHUP_handler;   // at DEFAULT handler
   return pcb;
 }
   

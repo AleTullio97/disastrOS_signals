@@ -47,10 +47,12 @@ void childFunction(void* args){
   disastrOS_exit(disastrOS_getpid()+1);
 }
 
+/* CHE CI FAI QUI???
 void pausatore(void){
 	int res = disastrOS_pause();
 	if(...) allelujah;
 }
+*/
 
 void initFunction(void* args) {
   disastrOS_printStatus();

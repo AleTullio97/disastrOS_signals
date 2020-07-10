@@ -18,13 +18,18 @@ typedef struct PCB{
   int pid;
   int return_value; // ret value for the parent
   ProcessStatus status;
+  int swap_to_sc; // at swap to signal context ( ONLY when enter the running state )
   int signals;			
   int signals_mask;		
-  void (*signals_handler[MAX_SIGNALS])(); // at array of handler function
+  // void (*signals_handler[MAX_SIGNALS])(); // at array of handler function
 
   struct PCB* parent;
   ListHead children;
   ucontext_t cpu_state;
+  
+  // at defining a context for each installed signal
+  ucontext_t signal_context[DEFINED_SIG];
+  
 
   // timers
   struct TimerItem *timer;
@@ -36,8 +41,9 @@ typedef struct PCB{
   
   //we are really rude :) the stack is INSIDE the pcb
   //forgive me for the bestiality
+  // at signal stack shared for every process signal
   char stack[STACK_SIZE];
-
+  
   // more stuff to come
 
   //the one below is a hack for the syscalls

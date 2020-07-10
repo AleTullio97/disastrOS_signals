@@ -27,9 +27,6 @@ void internal_fork() {
   //adds the new process to the ready queue
   List_insert(&ready_list, ready_list.last, (ListItem*) new_pcb);
 
-  // at copy parent signals_handler
-  cpy_signals_handler(new_pcb, running);
-  
   //sets the retvalue for the caller to the new pid
   running->syscall_retvalue=new_pcb->pid;
 }

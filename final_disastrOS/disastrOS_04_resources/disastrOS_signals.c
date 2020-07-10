@@ -17,6 +17,7 @@ typedef void (*disastrOS_sighandler_t)(void);
 // at return 0 on success
 // at return -1 on failure
 int disastrOS_signal(int signum, disastrOS_sighandler_t handler){
+	/*
 	// at undefined SIGNAL has been sent
 	if( signum!=DSOS_SIGCHLD && signum!=DSOS_SIGHUP){
 		return -1;
@@ -40,10 +41,12 @@ int disastrOS_signal(int signum, disastrOS_sighandler_t handler){
 		running->signals_handler[signum] = handler;
 		return 0;		
 	}
+	*/
 	return 0;
 }
-	
+// REMOVE
 void cpy_signals_handler(PCB* child, PCB* parent){
+	/*
 	int strct_size = sizeof(child->signals_handler);
 	char* buf_in = (char*) parent->signals_handler;
 	char* buf_out = (char*) child->signals_handler;
@@ -51,17 +54,21 @@ void cpy_signals_handler(PCB* child, PCB* parent){
 		*buf_out = *buf_in;
 		buf_out++; buf_in++;
 	}
+	*/
 }  
 
-void signals_handle(){
+void signals_handler(){
+	running->swap_to_sc=0;
+	printf("signals_handler()\n");
 	int signals = running->signals;
 	printf("\nECCOME signals = %x\n",signals);
+
 	if(signals & DSOS_SIGCHLD){
-		(*running->signals_handler[DSOS_SIGCHLD-1])();
+		setcontext(&running->signal_context[DSOS_SIGCHLD]);
 		running->signals &=~DSOS_SIGCHLD; 
 	}
 	if(signals & DSOS_SIGHUP){
-		(*running->signals_handler[DSOS_SIGHUP-1])();
+		setcontext(&running->signal_context[DSOS_SIGHUP]);
 		running->signals &=~DSOS_SIGHUP;
 	}
 	if (running){
@@ -77,14 +84,16 @@ void signals_handle(){
 void  disastrOS_SIGCHLD_handler(){
 	printf("HEHEHEHE! DSOS_SIGCHLD ignored by DEFAULT!\n");
 	// at directly return to the running_pcb context
-	setcontext(&running->cpu_state);
+	running->swap_to_sc=0;
+	//setcontext(&running->cpu_state);
 }
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGHUP_handler(){
 	printf("HAHAHAHA! DSOS_SIGHUP ignored by DEFAULT!\n");
 	// at directly return to the running_pcb context
-	setcontext(&running->cpu_state);
+	running->swap_to_sc=0;
+	//setcontext(&running->cpu_state);
 }
 
 // at NEW disastrOS syscall wrapper defined HERE

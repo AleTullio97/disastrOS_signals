@@ -33,11 +33,6 @@ ucontext_t trap_context;
 ucontext_t main_context;
 ucontext_t idle_context;
 
-// at we declare the signal ucontext HERE
-// at all signals are handled in the signal_context.
-ucontext_t signals_context[DEFINED_SIG];
-char signal_stack[STACK_SIZE];			   // at signal stack for the kernel
-
 
 int shutdown_now=0; // used for termination
 char system_stack[STACK_SIZE];
@@ -51,6 +46,7 @@ void timerHandler(int j, siginfo_t *si, void *old_context) {
   swapcontext(&running->cpu_state, &interrupt_context);
 }
 
+// at qui giro sull'interrupt context
 void timerInterrupt(){
   if (log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s\n", disastrOS_time, running->pid, "TIMER_OUT");
@@ -59,12 +55,17 @@ void timerInterrupt(){
   internal_schedule();
   if (log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s\n", disastrOS_time, running->pid, "TIMER_IN");
-  setcontext(&running->cpu_state);
+  
+  // at directly jump to the signal context if the process has entered the running state
+  if((running->swap_to_sc) && (running->signals)) signals_handler();
+  else setcontext(&running->cpu_state);
 }
 
 
 //set up the signal action
 void setupSignals(void) {
+
+  
   struct sigaction act;
   act.sa_sigaction = timerHandler;
   sigemptyset(&act.sa_mask);
@@ -76,13 +77,14 @@ void setupSignals(void) {
   if(sigaction(SIGALRM, &act, NULL) != 0) {
     perror("Signal handler");
   }
-
+  
   // start the timer
   struct itimerval it;
   it.it_interval.tv_sec = 0;
   it.it_interval.tv_usec = INTERVAL * 1000;
   it.it_value = it.it_interval;
   if (setitimer(ITIMER_REAL, &it, NULL) ) perror("setitiimer");
+  
 }
 
 
@@ -103,8 +105,8 @@ int disastrOS_syscall(int syscall_num, ...) {
   running->syscall_num=syscall_num;
   swapcontext(&running->cpu_state, &trap_context);
   
-  // at handle new signals;
-  signals_handle();    
+  // at directly jump to the signal context if the process has entered the running state
+  if((running->swap_to_sc) && (running->signals)) signals_handler();
   return running->syscall_retvalue;
 }
 
@@ -137,8 +139,9 @@ void disastrOS_trap(){
 	    running->pid,
 	    "SYSCALL_OUT",
 	    syscall_num);
-  if (running)
+  if (running){
 	setcontext(&running->cpu_state);
+  }
   else {
     printf("no active processes\n");
     disastrOS_printStatus();
@@ -188,7 +191,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   syscall_vector[DSOS_CALL_SHUTDOWN]      = internal_shutdown;
   syscall_numarg[DSOS_CALL_SHUTDOWN]      = 0;
 
-  // at: initializing disastrOS_kill syscall 
+  // at: initializing NEW syscall : kill and pause 
 
   syscall_vector[DSOS_CALL_KILL]      = internal_kill;
   syscall_numarg[DSOS_CALL_KILL]      = 2;
@@ -205,7 +208,7 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   List_init(&resources_list);
   List_init(&timer_list);
 
-  /* INITIALIZATION OF SYSCALL AND INTERRUPT INFRASTRUCTIRE*/
+  /* INITIALIZATION OF SYSCALL AND INTERRUPT INFRASTRUCTURE*/
   disastrOS_debug("setting entry point for system shudtown... ");
   getcontext(&main_context); //<< we will come back here on shutdown
   if (shutdown_now)
@@ -227,23 +230,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   interrupt_context.uc_link = &main_context;
   sigemptyset(&interrupt_context.uc_sigmask);
   makecontext(&interrupt_context, timerInterrupt, 0); //< this is a context for the interrupt
-
-  
-  // at creating the signal context from an existing one
-  for(int i=0; i<DEFINED_SIG; i++){
-	signal_context[i]=trap_context;
-	signal_context[i].uc_stack.ss_sp = signal_stack;
-	signal_context[i].c_stack.ss_size = STACK_SIZE;
-	sigemptyset(&signal_context[i].uc_sigmask);
-	sigaddset(&signal_context[i].uc_sigmask, SIGALRM);
-	signal_context[i].uc_stack.ss_flags=0;
-	signal_context[i].uc_link=&main_context;
-	// at MAYBY MODIFY HERE
-  }
-  // at manually making context for each installed signals
-  makecontext(&signal_context[DSOS_SIGCHLD], disastrOS_SIGCHLD_handler, 0);
-  makecontext(&signal_context[DSOS_SIGHUP], disastrOS_SIGHUP_handler, 0);
-
   
   /* STARTING FIRST PROCESS AND IDLING*/
   running=PCB_alloc();
@@ -338,3 +324,5 @@ void disastrOS_printStatus(){
   PCBList_print(&zombie_list);
   printf("\n***********************************************\n\n");
 };
+
+

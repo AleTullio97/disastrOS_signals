@@ -37,11 +37,7 @@ void internal_schedule() {
     List_insert(&ready_list, ready_list.last, (ListItem*) running);
     next_process->status=Running;
     running=next_process;
-    /* MODIFYING
-    // at here I am in the trap context.
-	// at lets check signals at this point
-	setcontext(&signal_context);
-	*/
+	running->swap_to_sc=1; // at swap to signal context
   }
   // disastrOS_printStatus();
  

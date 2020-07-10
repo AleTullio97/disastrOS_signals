@@ -10,7 +10,7 @@ int disastrOS_pause(void);
 
 void cpy_signals_handler(PCB* child, PCB* parent);
 
-void signals_handle();
+void signals_handler();
 
 void disastrOS_SIGCHLD_handler();
 
