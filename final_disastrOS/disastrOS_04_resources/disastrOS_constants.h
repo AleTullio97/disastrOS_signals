@@ -10,15 +10,15 @@
 // at signals are defined here
 #define MAX_SIGNALS 32
 #define DEFINED_SIG 2
-#define DSOS_SIGCHLD 0x0
-#define DSOS_SIGHUP  0x1
+#define DSOS_SIGCHLD 0x1
+#define DSOS_SIGHUP  0x2
 
-// DELETE
+/* DELETE
 // at macros for signal handler
 #define DSOS_SIG_ERR (void (*)())-1	// at received when can not assign handler to a process
 #define DSOS_SIG_DFL (void (*)())0	// at set default behavior 
 #define DSOS_SIG_IGN (void (*)())1 	// at explicitly ignore the signal
-
+*/
 
 // errors
 #define DSOS_ESYSCALL_ARGUMENT_OUT_OF_BOUNDS -1

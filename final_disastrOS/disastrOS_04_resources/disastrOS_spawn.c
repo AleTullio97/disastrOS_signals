@@ -48,14 +48,14 @@ void internal_spawn(){
   // at creating signals contexts from an existing one
   for(int i=0; i<DEFINED_SIG; i++){
 	new_pcb->signal_context[i]=new_pcb->cpu_state;
-	//new_pcb->signal_context[i].uc_stack.ss_sp = new_pcb->stack;
-	//new_pcb->signal_context[i].uc_stack.ss_size = STACK_SIZE;
-	//sigemptyset(&new_pcb->signal_context[i].uc_sigmask);
-	//sigaddset(&new_pcb->signal_context[i].uc_sigmask, SIGALRM);
-	//new_pcb->signal_context[i].uc_stack.ss_flags=0;
-	new_pcb->signal_context[i].uc_link=&new_pcb->cpu_state;
+	new_pcb->signal_context[i].uc_stack.ss_sp = new_pcb->signal_stack;
+	new_pcb->signal_context[i].uc_stack.ss_size = STACK_SIZE;
+	sigemptyset(&new_pcb->signal_context[i].uc_sigmask);
+	sigaddset(&new_pcb->signal_context[i].uc_sigmask, SIGALRM);
+	new_pcb->signal_context[i].uc_stack.ss_flags=0;
+	new_pcb->signal_context[i].uc_link=&main_context;
   }
   // at manually making context for each installed signals
-  makecontext(&new_pcb->signal_context[DSOS_SIGCHLD], disastrOS_SIGCHLD_handler, 0);
-  makecontext(&new_pcb->signal_context[DSOS_SIGHUP], disastrOS_SIGHUP_handler, 0);
+  makecontext(&new_pcb->signal_context[DSOS_SIGCHLD-1], disastrOS_SIGCHLD_handler, 0);
+  makecontext(&new_pcb->signal_context[DSOS_SIGHUP-1], disastrOS_SIGHUP_handler, 0);
 }

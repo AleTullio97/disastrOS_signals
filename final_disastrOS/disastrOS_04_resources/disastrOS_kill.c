@@ -30,6 +30,25 @@ void internal_kill() {
 	  running->syscall_retvalue=0;
 	  running->signals|=(sig & running->signals_mask);
 	  //printf("ECCOME2\n");
+	  if (!running->timer) {
+			int cycles_to_sleep=1; // at wait one cycle by DEFAULT
+			int wake_time=disastrOS_time+cycles_to_sleep;
+			TimerItem* new_timer=TimerList_add(&timer_list, wake_time, running);
+			if (! new_timer) {
+				printf("no new timer!!!\n");
+				running->syscall_retvalue=DSOS_ESLEEP;
+				return;
+			}	
+	  }
+	  running->status=Waiting;
+			List_insert(&waiting_list, waiting_list.last, (ListItem*) running);
+			if(ready_list.first){
+				running=(PCB*) List_detach(&ready_list, ready_list.first);
+			}else{
+			running=0;
+			printf ("they are all sleeping\n");
+			disastrOS_printStatus();
+			}
 	  return;
   }
   
@@ -63,10 +82,18 @@ void internal_kill() {
   // at ie if the process has received any signals
   if(targetPCB){
 	  if(targetPCB->status==Waiting){
+		  /* don't do NOTHING
 		  List_detach(&waiting_list, (ListItem*) targetPCB);
 		  targetPCB->status=Ready;
 		  targetPCB->timer=0;
 		  List_insert(&ready_list, (ListItem*) targetPCB, (ListItem*) targetPCB);
+	      */
+	  }
+	  else if(targetPCB->status==Ready){
+		  List_detach(&ready_list, (ListItem*) targetPCB);
+		  targetPCB->status=Waiting;
+		  List_insert(&waiting_list, waiting_list.last, (ListItem*) targetPCB);
 	  }
   }
 }
+	

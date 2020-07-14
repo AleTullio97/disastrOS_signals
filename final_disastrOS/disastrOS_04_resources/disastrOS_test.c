@@ -22,16 +22,17 @@ void childFunction(void* args){
   int mode=0;
   int fd=disastrOS_openResource(disastrOS_getpid(),type,mode);
   printf("fd=%d\n", fd);
-  
+
   for (int i=0; i<(disastrOS_getpid()+1); ++i){
     printf("PID: %d, iteration: %d\n", disastrOS_getpid(), i);
-    disastrOS_sleep(10);
-    //disastrOS_kill(init_pcb->pid, DSOS_SIGHUP);
-    disastrOS_raise(DSOS_SIGCHLD);
-    disastrOS_sleep(2);
+    disastrOS_sleep((1+disastrOS_getpid())*2);
+    //disastrOS_kill(init_pcb->pid	, DSOS_SIGHUP);
+    //disastrOS_raise(DSOS_SIGCHLD);
+    //disastrOS_sleep(2);
+    /*
     int res = disastrOS_signal(DSOS_SIGCHLD, DSOS_SIG_IGN);
     if(res<0){
-		printf("Cannot change signal handler, Something went wrong\n");
+		printf("Cannot change signal handler, Something went 	wrong\n");
 	}
     res = disastrOS_signal(DSOS_SIGHUP, DSOS_SIG_IGN);
     if(res<0){
@@ -39,20 +40,11 @@ void childFunction(void* args){
 	}
 
     disastrOS_raise(DSOS_SIGHUP);
-    
-    
-    //disastrOS_sleep((20-disastrOS_getpid())*5);
+    * */
   }
   printf("PID: %d, terminating\n", disastrOS_getpid());
   disastrOS_exit(disastrOS_getpid()+1);
 }
-
-/* CHE CI FAI QUI???
-void pausatore(void){
-	int res = disastrOS_pause();
-	if(...) allelujah;
-}
-*/
 
 void initFunction(void* args) {
   disastrOS_printStatus();

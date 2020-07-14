@@ -46,7 +46,6 @@ PCB* PCB_alloc() {
   pcb->list.next=0;
   pcb->pid=last_pid; last_pid++;
   pcb->return_value=0;
-  pcb->swap_to_sc=0; // at set not to swap to signal context
   pcb->status=Invalid;
   pcb->last_fd=0;
   pcb->signals=0;

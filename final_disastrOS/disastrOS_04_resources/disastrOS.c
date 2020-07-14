@@ -32,21 +32,18 @@ ucontext_t interrupt_context;
 ucontext_t trap_context;
 ucontext_t main_context;
 ucontext_t idle_context;
-
-
 int shutdown_now=0; // used for termination
 char system_stack[STACK_SIZE];
 
-
-sigset_t signal_set;                       // process wide signal mask 
-
+sigset_t signal_set; // process wide signal mask 
+char signal_stack[STACK_SIZE]; 
 volatile int disastrOS_time=0;
 
 void timerHandler(int j, siginfo_t *si, void *old_context) {
   swapcontext(&running->cpu_state, &interrupt_context);
 }
 
-// at qui giro sull'interrupt context
+// at interrupt context here
 void timerInterrupt(){
   if (log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s\n", disastrOS_time, running->pid, "TIMER_OUT");
@@ -56,8 +53,8 @@ void timerInterrupt(){
   if (log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s\n", disastrOS_time, running->pid, "TIMER_IN");
   
-  // at directly jump to the signal context if the process has entered the running state
-  if((running->swap_to_sc) && (running->signals)) signals_handler();
+  // at check for signal (if present ) after the scheduler has done its job
+  if((running->signals)) signals_handler();
   else setcontext(&running->cpu_state);
 }
 
@@ -106,7 +103,7 @@ int disastrOS_syscall(int syscall_num, ...) {
   swapcontext(&running->cpu_state, &trap_context);
   
   // at directly jump to the signal context if the process has entered the running state
-  if((running->swap_to_sc) && (running->signals)) signals_handler();
+  //if((running->swap_to_sc) && (running->signals)) signals_handler();
   return running->syscall_retvalue;
 }
 

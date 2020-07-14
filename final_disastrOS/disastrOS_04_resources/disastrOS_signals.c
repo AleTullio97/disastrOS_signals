@@ -44,56 +44,48 @@ int disastrOS_signal(int signum, disastrOS_sighandler_t handler){
 	*/
 	return 0;
 }
-// REMOVE
-void cpy_signals_handler(PCB* child, PCB* parent){
-	/*
-	int strct_size = sizeof(child->signals_handler);
-	char* buf_in = (char*) parent->signals_handler;
-	char* buf_out = (char*) child->signals_handler;
-	for(int i=0; i<strct_size; i++){
-		*buf_out = *buf_in;
-		buf_out++; buf_in++;
-	}
-	*/
-}  
 
+
+// at here i'm in the interrupt_context
 void signals_handler(){
-	running->swap_to_sc=0;
-	printf("signals_handler()\n");
+	printf("PID: %d\n<- signals_handler() ->\n",running->pid);
 	int signals = running->signals;
-	printf("\nECCOME signals = %x\n",signals);
-
+	printf("\nSignals received = %x\n",signals);
 	if(signals & DSOS_SIGCHLD){
-		setcontext(&running->signal_context[DSOS_SIGCHLD]);
+		printf("DSOS_SIGCHLD RECEIVECD!\n");
 		running->signals &=~DSOS_SIGCHLD; 
+		// at verify the handler is available
+		if(running->signal_context[DSOS_SIGCHLD-1]) setcontext(&running->signal_context[DSOS_SIGCHLD-1]);
 	}
 	if(signals & DSOS_SIGHUP){
-		setcontext(&running->signal_context[DSOS_SIGHUP]);
+		printf("DSOS_SIGHUP RECEIVED!\n");
 		running->signals &=~DSOS_SIGHUP;
+		// at verify the handler is available
+		if(running->signal_context[DSOS_SIGHUP-1]) setcontext(&running->signal_context[DSOS_SIGHUP-1]);
 	}
 	if (running){
 		disastrOS_debug(" %d\n", running->pid);
 		setcontext(&running->cpu_state);
 	}else {
-		printf("no active processes\n");
+		printf("WARNING : no active processes\n");
 		disastrOS_printStatus();
 	}
 }
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGCHLD_handler(){
-	printf("HEHEHEHE! DSOS_SIGCHLD ignored by DEFAULT!\n");
+	printf("PID: %d\nHEHEHEHE! DSOS_SIGCHLD ignored by DEFAULT!\n",running->pid);
 	// at directly return to the running_pcb context
-	running->swap_to_sc=0;
 	//setcontext(&running->cpu_state);
+	signals_handler(); // at continue handling other signals
 }
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGHUP_handler(){
-	printf("HAHAHAHA! DSOS_SIGHUP ignored by DEFAULT!\n");
+	printf("PID: %d\nHAHAHAHA! DSOS_SIGHUP ignored by DEFAULT!\n",running->pid);
 	// at directly return to the running_pcb context
-	running->swap_to_sc=0;
 	//setcontext(&running->cpu_state);
+	signals_handler(); // at continue handling other signals
 }
 
 // at NEW disastrOS syscall wrapper defined HERE
