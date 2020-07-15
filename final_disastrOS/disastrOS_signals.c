@@ -55,13 +55,13 @@ void signals_handler(){
 		printf("DSOS_SIGCHLD RECEIVECD!\n");
 		running->signals &=~DSOS_SIGCHLD; 
 		// at verify the handler is available
-		if(running->signal_context[DSOS_SIGCHLD-1]) setcontext(&running->signal_context[DSOS_SIGCHLD-1]);
+		setcontext(&running->signal_context[DSOS_SIGCHLD-1]);
 	}
 	if(signals & DSOS_SIGHUP){
 		printf("DSOS_SIGHUP RECEIVED!\n");
 		running->signals &=~DSOS_SIGHUP;
 		// at verify the handler is available
-		if(running->signal_context[DSOS_SIGHUP-1]) setcontext(&running->signal_context[DSOS_SIGHUP-1]);
+		setcontext(&running->signal_context[DSOS_SIGHUP-1]);
 	}
 	if (running){
 		disastrOS_debug(" %d\n", running->pid);

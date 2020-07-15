@@ -4,11 +4,12 @@
 #include "linked_list.h"
 #include "disastrOS_timer.h"
 
+
 typedef enum ProcessStatus {Invalid=-1,
 			    Created=0x0,
 			    Running=0x1,
 			    Ready=0x2,
-			    Waiting=0x3,   // io or semaphore wait
+			    Waiting=0x3,   // io or semaphore wait or internal_wait();
 			    Suspended=0x4, // ctrl-z
 			    Zombie=0x5}
   ProcessStatus;
@@ -20,7 +21,6 @@ typedef struct PCB{
   ProcessStatus status;
   int signals;			
   int signals_mask;		
-  // void (*signals_handler[MAX_SIGNALS])(); // at array of handler function
 
   struct PCB* parent;
   ListHead children;
@@ -31,7 +31,7 @@ typedef struct PCB{
   
 
   // timers
-  struct TimerItem *timer;
+  struct TimerItem* timer;
 
   // descriptors (for all resources)
   int last_fd;

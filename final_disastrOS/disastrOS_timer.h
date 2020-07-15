@@ -21,6 +21,9 @@ TimerItem* TimerList_current(ListHead* timers, int current_time);
 
 int TimerList_removeCurrent(ListHead* timers);
 
+// at remove a timer element
+int TimerList_removeTimer(ListHead* timers, TimerItem* item);
+
 void TimerList_print(ListHead* timers);
 
 int TimerItem_free(TimerItem* item);

@@ -78,6 +78,14 @@ int TimerList_removeCurrent(ListHead* timers){
   return 0;
 }
 
+// at remove a timer element
+int TimerList_removeTimer(ListHead* timers, TimerItem* item){
+	if(! timers->first) return -1;
+	List_detach(timers, (ListItem*) item);
+	TimerItem_free(item);
+	return 0;
+}
+
 void TimerList_print(ListHead* timers) {
   printf("[");
   TimerItem* aux=(TimerItem*) timers->first;

@@ -22,6 +22,7 @@ void internal_sleep(){
     return;
   } 
   running->status=Waiting;
+  running->timer=(struct TimerItem*)new_timer;
   List_insert(&waiting_list, waiting_list.last, (ListItem*) running);
   if (ready_list.first)
     running=(PCB*) List_detach(&ready_list, ready_list.first);

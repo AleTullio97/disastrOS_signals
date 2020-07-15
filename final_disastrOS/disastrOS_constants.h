@@ -4,6 +4,7 @@
 #define MAX_NUM_RESOURCES 1024
 #define MAX_NUM_RESOURCES_PER_PROCESS 32
 #define MAX_NUM_DESCRIPTORS_PER_PROCESS 32
+#define MAX_TIME_TO_PAUSE (MAX_NUM_PROCESSES*INTERVAL*ALPHA)
 
 #define STACK_SIZE        16384
 
@@ -34,11 +35,13 @@
 #define DSOS_ERESOURCENOFD -11
 #define DSOS_ERESOURCECLOSE -12
 #define DSOS_ERESOURCEINUSE -13
-#define DSOS_EUNDEFSH -14		// at Undefined Signal Handler
+//#define DSOS_EUNDEFSH -14		// at Undefined Signal Handler
+
 
 // at the following errors concerns signals 
 #define DSOS_EINVAL -14 // at thrown when an invalid signal is sent.
 #define DSOS_ESRCH -15 // at the target process or process group does not exist.
+#define DSOS_EINTR -16 //
 
 // syscall numbers
 #define DSOS_MAX_SYSCALLS 32
