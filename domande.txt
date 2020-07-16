@@ -1,1 +1,0 @@
-// non ho impostato un proesso in waiting list quando riceve un segnale. va bene?
