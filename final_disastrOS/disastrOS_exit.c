@@ -20,11 +20,11 @@ void internal_exit(){
   while(running->children.first){
 
     // detach from current list
-    ListItem* item = List_detach(& running->children, running->children.first);
+    ListItem* item = List_detach(&running->children, running->children.first);
     assert(item);
     
     // attach to init's children list
-    List_insert(& init_pcb->children, init_pcb->children.last, item);
+    List_insert(&init_pcb->children, init_pcb->children.last, item);
 
     // send SIGHUP
     PCBPtr* pcb_ptr=(PCBPtr*) item;

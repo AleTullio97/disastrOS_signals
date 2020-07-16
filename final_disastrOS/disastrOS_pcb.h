@@ -38,11 +38,11 @@ typedef struct PCB{
   ListHead descriptors;
   
   
-  //we are really rude :) the stack is INSIDE the pcb
-  //forgive me for the bestiality
-  // at signal stack shared for every process signal
+  // we are really rude :) the stack is INSIDE the pcb
+  // forgive me for the bestiality
   char stack[STACK_SIZE];
-  char signal_stack[STACK_SIZE];
+  char signal_stack[STACK_SIZE];   // at signal stack shared for every process signal
+  
   // more stuff to come
 
   //the one below is a hack for the syscalls

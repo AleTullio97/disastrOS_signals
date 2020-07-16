@@ -43,7 +43,7 @@ void timerHandler(int j, siginfo_t *si, void *old_context) {
   swapcontext(&running->cpu_state, &interrupt_context);
 }
 
-// at interrupt context here
+// at NOTE: interrupt context here
 void timerInterrupt(){
   if (log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s\n", disastrOS_time, running->pid, "TIMER_OUT");
@@ -101,9 +101,6 @@ int disastrOS_syscall(int syscall_num, ...) {
   va_end(ap);
   running->syscall_num=syscall_num;
   swapcontext(&running->cpu_state, &trap_context);
-  
-  // at directly jump to the signal context if the process has entered the running state
-  //if((running->swap_to_sc) && (running->signals)) signals_handler();
   return running->syscall_retvalue;
 }
 
@@ -128,7 +125,7 @@ void disastrOS_trap(){
  
   disastrOS_debug("syscall: %d, pid: %d\n", syscall_num, running->pid);
   (*my_syscall)();
-  //internal_schedule();
+
  return_to_process:
   if(log_file)
     fprintf(log_file, "TIME: %d\tPID: %d\tACTION: %s %d\n",

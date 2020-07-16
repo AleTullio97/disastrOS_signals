@@ -10,57 +10,19 @@
 #include "disastrOS_globals.h"
 #include "disastrOS_pcb.h"
 
-typedef void (*disastrOS_sighandler_t)(void);
-
-
-// at change running->signals_hanlder[signum] to handler
-// at return 0 on success
-// at return -1 on failure
-int disastrOS_signal(int signum, disastrOS_sighandler_t handler){
-	/*
-	// at undefined SIGNAL has been sent
-	if( signum!=DSOS_SIGCHLD && signum!=DSOS_SIGHUP){
-		return -1;
-	}
-	else if(handler==DSOS_SIG_IGN){
-		running->signals_mask &= ~signum; // at avoid to receive signum signal
-		running->signals &= ~signum;
-		return 0;	  
-	}
-	else if(handler==DSOS_SIG_DFL){
-		if(signum==DSOS_SIGCHLD){
-			running->signals_handler[DSOS_SIGCHLD] = disastrOS_SIGCHLD_handler;
-			return 0;
-		}
-		else if(signum==DSOS_SIGHUP){
-			running->signals_handler[DSOS_SIGHUP] = disastrOS_SIGHUP_handler;
-			return 0;
-		}
-	}// at here we assume that handler is a user define function handler
-	else{
-		running->signals_handler[signum] = handler;
-		return 0;		
-	}
-	*/
-	return 0;
-}
-
-
 // at here i'm in the interrupt_context
 void signals_handler(){
-	printf("PID: %d\n<- signals_handler() ->\n",running->pid);
 	int signals = running->signals;
-	printf("\nSignals received = %x\n",signals);
+	if( signals){
+		printf("\nPID: %d\n<- signals_handler() ->\n",running->pid);
+		printf("\nSignals received = %x\n",signals);
+	}
 	if(signals & DSOS_SIGCHLD){
-		printf("DSOS_SIGCHLD RECEIVECD!\n");
 		running->signals &=~DSOS_SIGCHLD; 
-		// at verify the handler is available
 		setcontext(&running->signal_context[DSOS_SIGCHLD-1]);
 	}
 	if(signals & DSOS_SIGHUP){
-		printf("DSOS_SIGHUP RECEIVED!\n");
 		running->signals &=~DSOS_SIGHUP;
-		// at verify the handler is available
 		setcontext(&running->signal_context[DSOS_SIGHUP-1]);
 	}
 	if (running){
@@ -74,14 +36,47 @@ void signals_handler(){
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGCHLD_handler(){
-	printf("PID: %d\nHEHEHEHE! DSOS_SIGCHLD ignored by DEFAULT!\n",running->pid);
-	// at directly return to the running_pcb context
-	//setcontext(&running->cpu_state);
+	printf("DSOS_SIGCHLD RECEIVECD!\n");
+	int res;
+	PCB* child_pcb=0;
+	PCB* died_pcb=0;
+	PCBPtr* child_pcb_ptr=0;
+	PCBPtr* died_pcb_ptr=0;
+	ListItem* aux=running->children.first;
+	while(aux){
+		child_pcb_ptr=(PCBPtr*) aux;
+		child_pcb=child_pcb_ptr->pcb;
+		if (child_pcb->status==Zombie) {
+			died_pcb=child_pcb;
+			died_pcb_ptr=child_pcb_ptr;
+			break;
+		}
+		aux=aux->next;
+	}
+	if(died_pcb){
+		res = died_pcb->return_value;
+		if(res >= 0){
+			printf("PID: %d - My child has completed his work.\n", disastrOS_getpid());
+		}
+		else printf("PID: %d - My child has not completed his work correctly.\nIgnore the cause.", disastrOS_getpid());
+		// remove the children pcb from children list
+		List_detach(&running->children, (ListItem*) died_pcb_ptr);
+		PCBPtr_free(died_pcb_ptr);
+
+		// remove he pc from zombie pool
+		List_detach(&zombie_list, (ListItem*) died_pcb);
+		running->syscall_retvalue = died_pcb->pid;
+		PCB_free(died_pcb);
+	}else {
+		printf("PID: %d - Can't find a died child.\n", disastrOS_getpid());
+	}
 	signals_handler(); // at continue handling other signals
 }
 
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGHUP_handler(){
+	printf("DSOS_SIGHUP RECEIVED!\n");
+		
 	printf("PID: %d\nHAHAHAHA! DSOS_SIGHUP ignored by DEFAULT!\n",running->pid);
 	// at directly return to the running_pcb context
 	//setcontext(&running->cpu_state);

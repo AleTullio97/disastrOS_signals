@@ -12,7 +12,7 @@ void internal_fork() {
   if (!new_pcb) {
     running->syscall_retvalue=DSOS_ESPAWN;
     return;
-  } 
+  }
 
   new_pcb->status=Ready;
 

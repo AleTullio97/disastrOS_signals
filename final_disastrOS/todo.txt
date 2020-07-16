@@ -1,0 +1,55 @@
+COSE DA FARE:
+
+Pulizia:
+	- disastrOS_kill.c 
+	- 
+
+Implementa:
+	- diastrOS_signal in disastrOS_signals.c
+	- handler in disastrOS_signals.c
+
+
+
+
+
+typedef void (*disastrOS_sighandler_t)(void);
+
+
+// at change running->signals_hanlder[signum] to handler
+// at return 0 on success
+// at return -1 on failure
+
+int disastrOS_signal(int signum, disastrOS_sighandler_t handler){
+	// at undefined SIGNAL has been sent
+	if( signum!=DSOS_SIGCHLD && signum!=DSOS_SIGHUP){
+		return -1;
+	}
+	else if(handler==DSOS_SIG_IGN){
+		running->signals_mask &= ~signum; // at avoid to receive signum signal
+		running->signals &= ~signum;
+		return 0;	  
+	}
+	else if(handler==DSOS_SIG_DFL){
+		if(signum==DSOS_SIGCHLD){
+			running->signals_handler[DSOS_SIGCHLD] = disastrOS_SIGCHLD_handler;
+			return 0;
+		}
+		else if(signum==DSOS_SIGHUP){
+			running->signals_handler[DSOS_SIGHUP] = disastrOS_SIGHUP_handler;
+			return 0;
+		}
+	}// at here we assume that handler is a user define function handler
+	else{
+		running->signals_handler[signum] = handler;
+		return 0;		
+	}
+	*/
+	return 0;
+}
+
+/* DELETE
+// at macros for signal handler
+#define DSOS_SIG_ERR (void (*)())-1	// at received when can not assign handler to a process
+#define DSOS_SIG_DFL (void (*)())0	// at set default behavior 
+#define DSOS_SIG_IGN (void (*)())1 	// at explicitly ignore the signal
+*/

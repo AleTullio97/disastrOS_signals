@@ -14,12 +14,6 @@
 #define DSOS_SIGCHLD 0x1
 #define DSOS_SIGHUP  0x2
 
-/* DELETE
-// at macros for signal handler
-#define DSOS_SIG_ERR (void (*)())-1	// at received when can not assign handler to a process
-#define DSOS_SIG_DFL (void (*)())0	// at set default behavior 
-#define DSOS_SIG_IGN (void (*)())1 	// at explicitly ignore the signal
-*/
 
 // errors
 #define DSOS_ESYSCALL_ARGUMENT_OUT_OF_BOUNDS -1
@@ -35,13 +29,11 @@
 #define DSOS_ERESOURCENOFD -11
 #define DSOS_ERESOURCECLOSE -12
 #define DSOS_ERESOURCEINUSE -13
-//#define DSOS_EUNDEFSH -14		// at Undefined Signal Handler
-
 
 // at the following errors concerns signals 
 #define DSOS_EINVAL -14 // at thrown when an invalid signal is sent.
 #define DSOS_ESRCH -15 // at the target process or process group does not exist.
-#define DSOS_EINTR -16 //
+#define DSOS_EINTR -16 // at a signal was caught and the signal-catching function returned
 
 // syscall numbers
 #define DSOS_MAX_SYSCALLS 32
@@ -57,7 +49,7 @@
 #define DSOS_CALL_DESTROY_RESOURCE 9
 #define DSOS_CALL_SHUTDOWN  10
 
-// at defining syscall numbers
+// at defining NEW syscall numbers
 #define DSOS_CALL_KILL	 11
 #define DSOS_CALL_PAUSE  12
 
