@@ -35,9 +35,9 @@ void internal_kill() {
   
   // at SIGCHLD can be sent to the parent only 
   if(sig == DSOS_SIGCHLD){
-	  printf("Something is going wrong");
 	  if((!running->parent) || (running->parent->pid != pid)){
 		  running->syscall_retvalue=DSOS_ESRCH;
+		  printf("Can not sent DSOS_SIGCHLD to a not parent process.\n");
 		  return;
 	  }else {
 		  running->parent->signals|=(sig & running->parent->signals_mask);

@@ -10,7 +10,7 @@
 #include "disastrOS_globals.h"
 #include "disastrOS_pcb.h"
 
-// at here i'm in the interrupt_context
+// at check for signals -> handle
 void signals_handler(){
 	int signals = running->signals;
 	if( signals){
@@ -34,9 +34,9 @@ void signals_handler(){
 	}
 }
 
-// at TO BE IMPLEMENTED SOON...
+// at default sigchld handler, can not be be changed in this version.
 void  disastrOS_SIGCHLD_handler(){
-	printf("DSOS_SIGCHLD RECEIVECD!\n");
+	printf("DSOS_SIGCHLD RECEIVED!\n");
 	int res;
 	PCB* child_pcb=0;
 	PCB* died_pcb=0;
@@ -58,12 +58,12 @@ void  disastrOS_SIGCHLD_handler(){
 		if(res >= 0){
 			printf("PID: %d - My child has completed his work.\n", disastrOS_getpid());
 		}
-		else printf("PID: %d - My child has not completed his work correctly.\nIgnore the cause.", disastrOS_getpid());
-		// remove the children pcb from children list
+		else printf("PID: %d - My child has not completed his work correctly.\nIgnore the cause.\n", disastrOS_getpid());
+		// at remove the children pcb from children list
 		List_detach(&running->children, (ListItem*) died_pcb_ptr);
 		PCBPtr_free(died_pcb_ptr);
 
-		// remove he pc from zombie pool
+		// at remove the pcb from zombie pool
 		List_detach(&zombie_list, (ListItem*) died_pcb);
 		running->syscall_retvalue = died_pcb->pid;
 		PCB_free(died_pcb);
@@ -76,10 +76,10 @@ void  disastrOS_SIGCHLD_handler(){
 // at TO BE IMPLEMENTED SOON...
 void  disastrOS_SIGHUP_handler(){
 	printf("DSOS_SIGHUP RECEIVED!\n");
-		
-	printf("PID: %d\nHAHAHAHA! DSOS_SIGHUP ignored by DEFAULT!\n",running->pid);
+	// at ignore by default
+	printf("PID: %dCan not stop my work now. I continue my job.\n", disastrOS_getpid());
+
 	// at directly return to the running_pcb context
-	//setcontext(&running->cpu_state);
 	signals_handler(); // at continue handling other signals
 }
 
