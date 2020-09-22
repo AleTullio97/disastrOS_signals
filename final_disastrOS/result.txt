@@ -1,0 +1,1250 @@
+The function pointers are:
+ -childFunction1: 0x5634ef776dab
+ -childFunction2: 0x5634ef776ee3
+ -childFunction3: 0x5634ef77715d
+START
+****************** DisastrOS ******************
+Running: [pid: 0, child: ()]
+Timers: []
+Resources: {
+}
+
+Ready: {
+}
+
+Waiting: {
+}
+
+Zombie: {
+}
+
+***********************************************
+
+Hello, I am init and I just started
+I feel like to spawn 11 nice threads
+mode: 1
+opening resource (and creating if necessary)
+fd=0
+mode: 1
+opening resource (and creating if necessary)
+fd=1
+mode: 1
+opening resource (and creating if necessary)
+fd=2
+mode: 1
+opening resource (and creating if necessary)
+fd=3
+mode: 1
+opening resource (and creating if necessary)
+fd=4
+mode: 1
+opening resource (and creating if necessary)
+fd=5
+mode: 1
+opening resource (and creating if necessary)
+fd=6
+mode: 1
+opening resource (and creating if necessary)
+fd=7
+mode: 1
+opening resource (and creating if necessary)
+fd=8
+mode: 1
+opening resource (and creating if necessary)
+fd=9
+mode: 1
+opening resource (and creating if necessary)
+fd=10
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)]
+Timers: []
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()],
+	[pid: 2, child: ()],
+	[pid: 3, child: ()],
+	[pid: 4, child: ()],
+	[pid: 5, child: ()],
+	[pid: 6, child: ()],
+	[pid: 7, child: ()],
+	[pid: 8, child: ()],
+	[pid: 9, child: ()],
+	[pid: 10, child: ()],
+	[pid: 11, child: ()],
+	[pid: 12, child: ()]
+}
+
+Waiting: {
+}
+
+Zombie: {
+}
+
+***********************************************
+
+Hello, I am the sleeper, and I sleep 1
+time: 1
+Hello, I am the child function 2
+I will iterate a bit, before terminating
+fd=0
+PID: 2, iteration: 0
+Hello, I am the child function 3
+I will iterate a bit, before terminating.
+fd=0
+PID: 3, iteration: 0
+Hello, I am the child function 4
+I will iterate a bit, before terminating
+fd=0
+PID: 4 is generating a new thread. mode: 1
+opening resource (and creating if necessary)
+fd=-8
+PID: 4, iteration: 0
+Hello, I am the child function 5
+I will iterate a bit, before terminating
+fd=0
+PID: 5, iteration: 0
+Hello, I am the child function 6
+I will iterate a bit, before terminating
+fd=0
+PID: 6, iteration: 0
+Hello, I am the child function 7
+I will iterate a bit, before terminating
+fd=0
+PID: 7, iteration: 0
+Hello, I am the child function 8
+I will iterate a bit, before terminating
+fd=0
+PID: 8, iteration: 0
+Hello, I am the child function 9
+I will iterate a bit, before terminating
+fd=0
+PID: 9, iteration: 0
+Hello, I am the child function 10
+I will iterate a bit, before terminating
+fd=0
+PID: 10, iteration: 0
+Hello, I am the child function 11
+I will iterate a bit, before terminating
+fd=-9
+PID: 11, iteration: 0
+Hello, I am a signals sender and I am used to send random signal to every processes.
+time: 2
+Hello, I'm function one ( PID : 13 ) and I pause until any signal is received
+fd=-9
+time: 3
+time: 4
+time: 5
+time: 6
+time: 7
+time: 8
+time: 9
+PID: 2, iteration: 1
+time: 10
+time: 11
+PID: 4, iteration: 1
+PID: 3, iteration: 1
+time: 12
+time: 13
+time: 14
+time: 15
+PID: 5, iteration: 1
+time: 16
+time: 17
+PID: 6, iteration: 1
+PID: 2, iteration: 2
+time: 18
+time: 19
+PID: 7, iteration: 1
+time: 20
+time: 21
+PID: 4, iteration: 2
+PID: 8, iteration: 1
+PID: 3 is generating a new thread. mode: 1
+opening resource (and creating if necessary)
+fd=-8
+PID: 3 is wainting on his child ( PID : 14 ) to terminate.
+time: 22
+Hello, I'm function zero ( PID : 14 ) and I sleep 40 before terminating
+fd=-9
+time: 23
+PID: 9, iteration: 1
+time: 24
+time: 25
+PID: 10, iteration: 1
+PID: 2 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 2, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)]
+Timers: [(pid:5, t:27), (pid:11, t:27), (pid:6, t:31), (pid:4, t:31), (pid:7, t:35), (pid:8, t:39), (pid:12, t:41), (pid:9, t:43), (pid:10, t:47), (pid:14, t:62), (pid:13, t:51202)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3), (pid: 0, fd: 3, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4), (pid: 0, fd: 4, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5), (pid: 0, fd: 5, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6), (pid: 0, fd: 6, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 12, child: ()],
+	[pid: 13, child: ()],
+	[pid: 5, child: ()],
+	[pid: 6, child: ()],
+	[pid: 7, child: ()],
+	[pid: 4, child: (13)],
+	[pid: 8, child: ()],
+	[pid: 3, child: (14)],
+	[pid: 14, child: ()],
+	[pid: 9, child: ()],
+	[pid: 11, child: ()],
+	[pid: 10, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 2 terminated, retval:3, alive: 11 
+time: 26
+time: 27
+
+PID: 5
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 5 - Can't find a died child.
+PID: 11, iteration: 1
+time: 28
+time: 29
+PID: 5, iteration: 2
+time: 30
+time: 31
+
+PID: 6
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 6 - Can't find a died child.
+PID: 4, iteration: 3
+time: 32
+time: 33
+PID: 6, iteration: 2
+time: 34
+time: 35
+
+PID: 7
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 7 - Can't find a died child.
+time: 36
+time: 37
+PID: 7, iteration: 2
+time: 38
+time: 39
+
+PID: 8
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 8 - Can't find a died child.
+time: 40
+time: 41
+Can not sent DSOS_SIGCHLD to a not parent process.
+Can not sent DSOS_SIGCHLD to a not parent process.
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 10!
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 10!
+Can not sent DSOS_SIGCHLD to a not parent process.
+Can not sent DSOS_SIGCHLD to a not parent process.
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 8!
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 8!
+Can not sent DSOS_SIGCHLD to a not parent process.
+Can not sent DSOS_SIGCHLD to a not parent process.
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 6!
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 6!
+Can not sent DSOS_SIGCHLD to a not parent process.
+Can not sent DSOS_SIGCHLD to a not parent process.
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 4!
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 4!
+Can not sent DSOS_SIGCHLD to a not parent process.
+Can not sent DSOS_SIGCHLD to a not parent process.
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 2!
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 2!
+Can not sent DSOS_SIGCHLD to a not parent process.
+Can not sent DSOS_SIGCHLD to a not parent process.
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 12 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 3, 4, 5, 6, 7, 8, 9, 10, 11)]
+Timers: [(pid:9, t:43), (pid:10, t:47), (pid:6, t:47), (pid:11, t:51), (pid:7, t:53), (pid:14, t:62), (pid:13, t:51202)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3), (pid: 0, fd: 3, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4), (pid: 0, fd: 4, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5), (pid: 0, fd: 5, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6), (pid: 0, fd: 6, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 5, child: ()],
+	[pid: 4, child: (13)],
+	[pid: 8, child: ()],
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 13, child: ()],
+	[pid: 3, child: (14)],
+	[pid: 14, child: ()],
+	[pid: 9, child: ()],
+	[pid: 10, child: ()],
+	[pid: 11, child: ()],
+	[pid: 6, child: ()],
+	[pid: 7, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 12 terminated, retval:13, alive: 10 
+PID: 4, iteration: 4
+PID: 8, iteration: 2
+time: 42
+time: 43
+
+PID: 9
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 9 - Can't find a died child.
+PID: 5, iteration: 3
+time: 44
+time: 45
+PID: 9, iteration: 2
+time: 46
+time: 47
+
+PID: 10
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 10 - Can't find a died child.
+time: 48
+time: 49
+PID: 10, iteration: 2
+PID: 6, iteration: 3
+time: 50
+time: 51
+
+PID: 11
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 11 - Can't find a died child.
+PID: 4 is killing PID 13
+PID: 4 -> DSOS_SIGHUP is goingo to be sento to pid : 13!
+time: 52
+
+PID: 13
+<- signals_handler() ->
+
+Signals received = 2
+DSOS_SIGHUP RECEIVED!
+PID: 13Can not stop my work now. I continue my job.
+PID: 13, PAUSE FINISHED ! Terminating
+time: 53
+PID: 11, iteration: 2
+time: 54
+time: 55
+
+PID: 5
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 5 - Can't find a died child.
+PID: 7, iteration: 3
+time: 56
+time: 57
+PID: 5, iteration: 4
+time: 58
+time: 59
+time: 60
+time: 61
+
+PID: 8
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 8 - Can't find a died child.
+PID: 8, iteration: 3
+time: 62
+PID: 14, terminating
+PID: 3 , feel happy my child worked fine!
+PID: 3, iteration: 2
+time: 63
+
+PID: 6
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 6 - Can't find a died child.
+time: 64
+time: 65
+PID: 6, iteration: 4
+time: 66
+time: 67
+
+PID: 9
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 9 - Can't find a died child.
+PID: 9, iteration: 3
+time: 68
+time: 69
+time: 70
+
+PID: 3
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 3 - Can't find a died child.
+time: 71
+PID: 4, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 3, 5, 6, 7, 8, 9, 10, 11, 13)]
+Timers: [(pid:3, t:72), (pid:10, t:73), (pid:11, t:77), (pid:8, t:79), (pid:6, t:79), (pid:9, t:87)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3), (pid: 0, fd: 3, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5), (pid: 0, fd: 5, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6), (pid: 0, fd: 6, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 7, child: ()],
+	[pid: 5, child: ()],
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 11, child: ()],
+	[pid: 8, child: ()],
+	[pid: 6, child: ()],
+	[pid: 9, child: ()],
+	[pid: 3, child: ()],
+	[pid: 10, child: ()]
+}
+
+Zombie: {
+	[pid: 13, child: ()]
+}
+
+***********************************************
+
+initFunction, child: 4 terminated, retval:5, alive: 9 
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 3, 5, 6, 7, 8, 9, 10, 11)]
+Timers: [(pid:3, t:72), (pid:10, t:73), (pid:11, t:77), (pid:8, t:79), (pid:6, t:79), (pid:9, t:87)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3), (pid: 0, fd: 3, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5), (pid: 0, fd: 5, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6), (pid: 0, fd: 6, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 7, child: ()],
+	[pid: 5, child: ()],
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 11, child: ()],
+	[pid: 8, child: ()],
+	[pid: 6, child: ()],
+	[pid: 9, child: ()],
+	[pid: 3, child: ()],
+	[pid: 10, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 13 terminated, retval:14, alive: 8 
+PID: 5, iteration: 5
+time: 72
+PID: 3, iteration: 3
+time: 73
+
+PID: 10
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 10 - Can't find a died child.
+PID: 10, iteration: 3
+PID: 7, iteration: 4
+time: 74
+time: 75
+time: 76
+time: 77
+time: 78
+time: 79
+PID: 11, iteration: 3
+time: 80
+time: 81
+PID: 8, iteration: 4
+PID: 6, iteration: 5
+time: 82
+
+PID: 3
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 3 - Can't find a died child.
+PID: 3, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 5, 6, 7, 8, 9, 10, 11)]
+Timers: [(pid:5, t:83), (pid:9, t:87), (pid:7, t:89), (pid:10, t:95), (pid:6, t:95), (pid:8, t:99), (pid:11, t:103)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5), (pid: 0, fd: 5, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6), (pid: 0, fd: 6, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 9, child: ()],
+	[pid: 5, child: ()],
+	[pid: 10, child: ()],
+	[pid: 7, child: ()],
+	[pid: 11, child: ()],
+	[pid: 8, child: ()],
+	[pid: 6, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 3 terminated, retval:4, alive: 7 
+time: 83
+
+PID: 5
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 5 - Can't find a died child.
+time: 84
+time: 85
+PID: 5 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 5, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 6, 7, 8, 9, 10, 11)]
+Timers: [(pid:9, t:87), (pid:7, t:89), (pid:10, t:95), (pid:6, t:95), (pid:8, t:99), (pid:11, t:103)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6), (pid: 0, fd: 6, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 9, child: ()],
+	[pid: 10, child: ()],
+	[pid: 7, child: ()],
+	[pid: 11, child: ()],
+	[pid: 8, child: ()],
+	[pid: 6, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 5 terminated, retval:6, alive: 6 
+time: 86
+time: 87
+time: 88
+time: 89
+
+PID: 7
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 7 - Can't find a died child.
+PID: 9, iteration: 4
+time: 90
+time: 91
+
+PID: 7
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 7 - Can't find a died child.
+PID: 7, iteration: 5
+time: 92
+time: 93
+time: 94
+time: 95
+time: 96
+time: 97
+PID: 10, iteration: 4
+PID: 6, iteration: 6
+time: 98
+time: 99
+time: 100
+time: 101
+
+PID: 8
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 8 - Can't find a died child.
+PID: 8, iteration: 5
+time: 102
+time: 103
+
+PID: 11
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 11 - Can't find a died child.
+time: 104
+time: 105
+PID: 11, iteration: 4
+time: 106
+time: 107
+time: 108
+time: 109
+PID: 7, iteration: 6
+time: 110
+time: 111
+
+PID: 6
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 6 - Can't find a died child.
+PID: 9, iteration: 5
+time: 112
+time: 113
+
+PID: 6
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 6 - Can't find a died child.
+PID: 6 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 6, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 7, 8, 9, 10, 11)]
+Timers: [(pid:10, t:119), (pid:8, t:119), (pid:7, t:125), (pid:11, t:129), (pid:9, t:131)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7), (pid: 0, fd: 7, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 10, child: ()],
+	[pid: 8, child: ()],
+	[pid: 11, child: ()],
+	[pid: 7, child: ()],
+	[pid: 9, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 6 terminated, retval:7, alive: 5 
+time: 114
+time: 115
+time: 116
+time: 117
+time: 118
+time: 119
+time: 120
+time: 121
+
+PID: 10
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 10 - Can't find a died child.
+PID: 10, iteration: 5
+PID: 8, iteration: 6
+time: 122
+time: 123
+time: 124
+time: 125
+time: 126
+time: 127
+
+PID: 7
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 7 - Can't find a died child.
+PID: 7, iteration: 7
+time: 128
+time: 129
+time: 130
+time: 131
+
+PID: 9
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 9 - Can't find a died child.
+PID: 11, iteration: 5
+time: 132
+time: 133
+PID: 9, iteration: 6
+time: 134
+time: 135
+time: 136
+time: 137
+time: 138
+time: 139
+time: 140
+time: 141
+
+PID: 8
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 8 - Can't find a died child.
+PID: 8, iteration: 7
+time: 142
+time: 143
+time: 144
+time: 145
+PID: 10, iteration: 6
+PID: 7 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 7, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 8, 9, 10, 11)]
+Timers: [(pid:9, t:153), (pid:11, t:155), (pid:8, t:159), (pid:10, t:167)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8), (pid: 0, fd: 8, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 11, child: ()],
+	[pid: 9, child: ()],
+	[pid: 8, child: ()],
+	[pid: 10, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 7 terminated, retval:8, alive: 4 
+time: 146
+time: 147
+time: 148
+time: 149
+time: 150
+time: 151
+time: 152
+time: 153
+time: 154
+time: 155
+
+PID: 11
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 11 - Can't find a died child.
+PID: 9, iteration: 7
+time: 156
+time: 157
+PID: 11, iteration: 6
+time: 158
+time: 159
+time: 160
+time: 161
+PID: 8, iteration: 8
+time: 162
+time: 163
+time: 164
+time: 165
+time: 166
+time: 167
+time: 168
+time: 169
+
+PID: 10
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 10 - Can't find a died child.
+PID: 10, iteration: 7
+time: 170
+time: 171
+time: 172
+time: 173
+time: 174
+time: 175
+
+PID: 9
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 9 - Can't find a died child.
+time: 176
+time: 177
+PID: 9, iteration: 8
+time: 178
+time: 179
+time: 180
+time: 181
+PID: 8 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 8, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 9, 10, 11)]
+Timers: [(pid:11, t:183), (pid:10, t:191), (pid:9, t:197)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9), (pid: 0, fd: 9, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 10, child: ()],
+	[pid: 9, child: ()],
+	[pid: 11, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 8 terminated, retval:9, alive: 3 
+time: 182
+time: 183
+
+PID: 11
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 11 - Can't find a died child.
+PID: 11, iteration: 7
+time: 184
+time: 185
+time: 186
+time: 187
+time: 188
+time: 189
+time: 190
+time: 191
+time: 192
+time: 193
+PID: 10, iteration: 8
+time: 194
+time: 195
+time: 196
+time: 197
+time: 198
+time: 199
+
+PID: 9
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 9 - Can't find a died child.
+PID: 9, iteration: 9
+time: 200
+time: 201
+time: 202
+time: 203
+time: 204
+time: 205
+time: 206
+time: 207
+time: 208
+time: 209
+PID: 11, iteration: 8
+time: 210
+time: 211
+time: 212
+time: 213
+time: 214
+time: 215
+time: 216
+time: 217
+
+PID: 10
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 10 - Can't find a died child.
+PID: 10, iteration: 9
+time: 218
+time: 219
+time: 220
+time: 221
+PID: 9 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 9, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 10, 11)]
+Timers: [(pid:11, t:233), (pid:10, t:239)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10), (pid: 0, fd: 10, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 11, child: ()],
+	[pid: 10, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 9 terminated, retval:10, alive: 2 
+time: 222
+time: 223
+time: 224
+time: 225
+time: 226
+time: 227
+time: 228
+time: 229
+time: 230
+time: 231
+time: 232
+time: 233
+time: 234
+time: 235
+
+PID: 11
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 11 - Can't find a died child.
+PID: 11, iteration: 9
+time: 236
+time: 237
+time: 238
+time: 239
+time: 240
+time: 241
+PID: 10, iteration: 10
+time: 242
+time: 243
+time: 244
+time: 245
+time: 246
+time: 247
+time: 248
+time: 249
+time: 250
+time: 251
+time: 252
+time: 253
+time: 254
+time: 255
+time: 256
+time: 257
+time: 258
+time: 259
+time: 260
+time: 261
+PID: 11, iteration: 10
+time: 262
+time: 263
+time: 264
+time: 265
+
+PID: 10
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 10 - Can't find a died child.
+PID: 10 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 10, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1, 11)]
+Timers: [(pid:11, t:285)]
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+	[pid: 11, child: ()]
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 10 terminated, retval:11, alive: 1 
+time: 266
+time: 267
+time: 268
+time: 269
+time: 270
+time: 271
+time: 272
+time: 273
+time: 274
+time: 275
+time: 276
+time: 277
+time: 278
+time: 279
+time: 280
+time: 281
+time: 282
+time: 283
+time: 284
+time: 285
+time: 286
+time: 287
+
+PID: 11
+<- signals_handler() ->
+
+Signals received = 1
+DSOS_SIGCHLD RECEIVED!
+PID: 11 - Can't find a died child.
+PID: 11, iteration: 11
+time: 288
+time: 289
+time: 290
+time: 291
+time: 292
+time: 293
+time: 294
+time: 295
+time: 296
+time: 297
+time: 298
+time: 299
+time: 300
+time: 301
+time: 302
+time: 303
+time: 304
+time: 305
+time: 306
+time: 307
+time: 308
+time: 309
+time: 310
+time: 311
+time: 312
+time: 313
+PID: 11 -> DSOS_SIGHUP is goingo to be sento to pid : 0!
+PID: 11, terminating
+****************** DisastrOS ******************
+Running: [pid: 0, child: (1)]
+Timers: []
+Resources: {
+	id: 0, type:0, pids:[(pid: 0, fd: 0, rid:0)],
+	id: 1, type:0, pids:[(pid: 1, fd: 0, rid:1)],
+	id: 2, type:0, pids:[(pid: 2, fd: 0, rid:2)],
+	id: 3, type:0, pids:[(pid: 3, fd: 0, rid:3)],
+	id: 4, type:0, pids:[(pid: 4, fd: 0, rid:4)],
+	id: 5, type:0, pids:[(pid: 5, fd: 0, rid:5)],
+	id: 6, type:0, pids:[(pid: 6, fd: 0, rid:6)],
+	id: 7, type:0, pids:[(pid: 7, fd: 0, rid:7)],
+	id: 8, type:0, pids:[(pid: 8, fd: 0, rid:8)],
+	id: 9, type:0, pids:[(pid: 9, fd: 0, rid:9)],
+	id: 10, type:0, pids:[(pid: 10, fd: 0, rid:10)]
+}
+
+Ready: {
+	[pid: 1, child: ()]
+}
+
+Waiting: {
+}
+
+Zombie: {
+}
+
+***********************************************
+
+initFunction, child: 11 terminated, retval:12, alive: 0 
+
+SHUTDOWN!
